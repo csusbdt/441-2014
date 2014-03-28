@@ -1,0 +1,277 @@
+---
+layout: default
+id: syllabus
+title: Syllabus 
+---
+
+<style>
+.table {
+  margin: 1em auto;
+}
+
+@media(min-width: 36) { .table { width: 34em; } }
+
+.table caption {
+  caption-side: top;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  color: #555;
+}
+
+.table th {
+  text-align: center;
+}
+
+.table th, .table td {
+  border: 1px solid #bbb;
+  padding: .3em .5em;
+}
+
+.table tr td:first-child {
+  width: 33%;
+  font-style: italic;
+}
+
+.letter-grades {
+  max-width: 12em;
+  margin: auto;
+}
+
+.letter-grades td {
+  padding-left: 1.5em;
+}
+
+.letter-grades td:first-child {
+  padding-left: 0.5em;
+}
+</style>
+
+<dl>
+  <dt>Course</dt>          <dd>CSE 441 Game Programming</dd>
+  <dt>School</dt>          <dd>CSUSB</dd>
+  <dt>Quarter</dt>         <dd>Winter 2014</dd>
+  <dt>Prerequisites</dt>   <dd>CSE 330 and preferably CSE 420</dd>
+  <dt>Lecture</dt>         <dd>Tue 12:00 - 1:15, JB 146<br>Thu 12:00 - 1:15, JB 146</dd>
+  <dt>Lab</dt>             <dd>Thu 1:30 - 3:20, JB 360</dd>
+  <dt>Textbook</dt>        <dd>All reading materials available for free on the Web.</dd> 
+  <dt>Instructor</dt>      <dd>Dr. David Turner</dd>
+  <dt>Email</dt>           <dd>dturner@csusb.edu</dd>
+  <dt>Office hours</dt>    <dd>Mon 3:30 - 4:30, JB 340 <br>
+                               Tue 1:30 - 3:30, JB 340 <br>
+                               Wed 3:30 - 4:30, JB 340</dd>
+  <dt>Website</dt>         <dd>http://csusbdt.github.io/441-2014</dd>
+</dl>
+
+<h2>Course Format</h2>
+
+<p>
+The following four types of activities will occur in lecture periods.
+</p>
+
+<ul>
+<li>I will present course topics.</li>
+<li>I will give quizzes and a final exam to assess your learning on course topics.</li>
+<li>You will present progress on research and game projects in your career portfolio.</li>
+</ul>
+
+<p>
+The lab periods will be used for activities that strengthen your understanding of
+the topics presented in lecture. 
+</p>
+
+<p>
+All required work is detailed in the course schedule, published on the Web.  
+I will announced in class, or by email, any changes to required work, points, 
+deadlines and quiz dates.
+</p>
+
+<p>
+You will maintain your work on assignments in a remote Git repository that I will set up for you.
+Only you and I will have access to your repository.
+I will evaluate your work by looking at your source code,
+building it and testing it.
+</p>
+
+<h2>Course Goals</h2>
+
+<ul>
+  <li>Students will learn how to develop games for both desktop and mobile operating systems.</li>
+  <li>Students will improve their programming abilities.</li>
+  <li>Students will progess with one or more projects in their career portfolios.</li>
+</ul>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+  <li>Improve mastery of C++ and object-oriented design.</li>
+  <li>Learn the Lua programming language.</li>
+  <li>Learn how to embed Lua in C-based projects.</li>
+  <li>Learn how to use SDL for cross-platform game development projects that
+      target Android, iOS, OS X, Windows and Linux.</li>
+  <li>Improve mastery of an integrated development environment (IDE).</li>
+  <li>Improve mastery of the Git revision control system.</li>
+  <li>Learn the theory and practice of steering behaviors.</li>
+</ul>
+
+<h2>Grading Criteria for Source Code</h2>
+
+<p>
+Writing a program to produce required behavior is not good enough for a full score in this class;
+you must also write code that is readable by humans.  Program readability is important because
+real­world programs are read over and over again in the process of fixing bugs and adding new
+functionality.  Program readability will be evaluated according to the following set of criteria.
+</p>
+
+<table class="table">
+  <caption>Readability Criteria for Source Code</caption>
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Organization</td>
+      <td>Is source code well organized?</td>
+    </tr>
+    <tr>
+      <td>Cleanliness</td>
+      <td>Have unnecessary variables and logic been removed from the code?</td>
+    </tr>
+    <tr>
+      <td>Logical indentation</td>
+      <td>Does indentation show logical structure?</td>
+    </tr>
+    <tr>
+      <td>Consistent indentation</td>
+      <td>Does indentation follow a consistent policy?</td>
+    </tr>
+    <tr>
+      <td>Portable indentation</td>
+      <td>Are tabs omitted?</td>
+    </tr>
+    <tr>
+      <td>Logical spacing</td>
+      <td>Does spacing show logical structure?</td>
+    </tr>
+    <tr>
+      <td>Consistent spacing</td>
+      <td>Does spacing follow a consistent policy?</td>
+    </tr>
+    <tr>
+      <td>Expressive and clear naming</td>
+      <td>Do variables, functions and classes have names 
+          that clearly express their purpose in the program?</td>
+    </tr>
+    <tr>
+      <td>Clear responsibilities</td>
+      <td>Are responsibilities of functions and classes clear 
+          and consistent with their names?
+          Is the code structured to avoid reliance on side effects produced by functions?</td>
+    </tr>
+    <tr>
+      <td>Necessary comments</td>
+      <td>Are comments included when needed?</td>
+    </tr>
+    <tr>
+      <td>Unnecessary comments</td>
+      <td>Are superfluous comments omitted?</td>
+    </tr>
+    <tr>
+      <td>Nonredundant</td>
+      <td>When 2 or more places inside a program need to perform the same activity,
+          is that activity defined as a function and called as such from where it is needed?</td>
+    </tr>
+    <tr>
+      <td>Spelling</td>
+      <td>Are user-defined identifiers free of spelling errors?
+          Are comments and other documentation free of spelling and grammatical errors?</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="callout">
+  Don't use tabs for indentation in your source code in this course.
+  Tabs display differently in different viewing and editing tools.
+  In general, tabs will degrade readability for some people who read your code,
+  especially if you mix tabs with spaces.
+  If you want full score on your assignments in this course, you should not use tabs.
+  If you are in the habit of pressing tab in your editor
+  and want to continue working this way,
+  look for an option in your editor to replace tabs with spaces.
+</p>
+ 
+<h2>Grading</h2>
+
+<p>
+The normal scale will be used to assign a letter grade.
+</p>
+
+<table class="letter-grades">
+  <thead>
+    <tr>
+      <th>Percent</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>95 - 100</td><td>A</td></tr>
+    <tr><td>90 -  94</td><td>A-</td></tr>
+    <tr><td>87 -  89</td><td>B+</td></tr>
+    <tr><td>84 -  86</td><td>B</td></tr>
+    <tr><td>80 -  83</td><td>B-</td></tr>
+    <tr><td>77 -  79</td><td>C+</td></tr>
+    <tr><td>74 -  76</td><td>C</td></tr>
+    <tr><td>70 -  73</td><td>C-</td></tr>
+    <tr><td>67 -  69</td><td>D+</td></tr>
+    <tr><td>64 -  66</td><td>D</td></tr>
+    <tr><td>60 -  63</td><td>D-</td></tr>
+    <tr><td> 0 -  59</td><td>F</td></tr>
+  </tbody>
+</table>
+
+<h2>Learning Outcomes</h2>
+
+<p>
+This course is designed to contribute to the following 
+learning outcomes of the computer systems program.
+</p>
+
+<p>
+a) An ability to apply knowledge of computing and mathematics appropriate to the discipline. <br>
+b) An ability to analyze a problem, and identify and define the computing requirements appropriate to its solution. <br>
+c) An ability to design, implement, and evaluate a computer-based system, process, component, or program to meet desired needs. <br>
+h) Recognition of the need to and an ability to engage in continuing professional development. <br>
+i) An ability to use current techniques, skills, and tools necessary for computing practice. <br>
+j) An ability to apply design and development principles in the construction of software systems of varying complexity.
+</p>
+
+<h2>Students with disabilities</h2>
+
+<p>
+If you are in need of an accommodation for a disability in order to participate in this class,
+please let me know as soon as possible, and also contact 
+<em>Services to Students with Disabilities</em> at UH-183, (909)537-5238.
+You are advised to establish a buddy system and alternate in the class
+if you require assistance in the event of an emergency. Individuals with disabilities should
+prepare for an emergency ahead of time by instructing a classmate and the instructor.
+</p>
+
+<h2>Academic Regulations and Procedures</h2>
+
+<p>
+See the CSUSB Bulletin of Courses for the University's policies on course withdrawal, cheating,
+and plagiarism.
+</p>
+
+<h2>Computer Science and Engineering Club</h2>
+
+<p>
+The <a href="http://cse-club.com/">Computer Science and Engineering Club</a> is a student-run organization that uses a
+combination of email and campus meetings to plan events, ask and answer technical questions,
+post job and internship openings, and discuss other topics of interest to computing majors at
+CSUSB. Club-sponsored events include seminars, workshops, tutoring and fun activities.
+</p>
+

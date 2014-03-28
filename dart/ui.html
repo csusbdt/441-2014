@@ -1,0 +1,74 @@
+---
+layout: default
+---
+
+<h1>UI</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li>Learn how to integrate HTML controls into the application.</li>
+</ul>
+
+<h2>Reading</h2>
+
+
+<ul>
+<li><a href=""></a></li>
+</ul>
+
+<h2>Instructions</h2>
+
+<p>
+Create a dart project named <em>ui</em> by making a copy of the <em>point-light</em> folder.
+</p>
+
+<p>
+We will add a button that is used to pause the animation.
+</p>
+
+<p>
+Create a file <em>ui.dart</em> with the following.
+</p>
+
+<pre>
+library ui;
+
+import 'dart:html';
+
+bool isPaused = false;
+
+void init() {
+  Element pauseButton = document.createElement('button')
+      ..innerHtml = 'Pause';
+  
+  document.body.append(pauseButton);
+    
+  pauseButton.onClick.listen((_) {
+    isPaused = !isPaused;
+  });
+}
+</pre>
+
+<p>
+Add code to main to call the init method of the ui library.
+</p>
+
+<p>
+Add code to the scene library to read the state of <code>isPaused</code>
+in the ui library and pause or resume the animation accordingly.
+Make sure the animation pauses and resumes smoothly,
+without suddenly jumping to a new position.
+</p>
+
+<h2>Quiz</h2>
+
+<p>
+Be prepared to answer the following quiz questions.
+</p>
+
+<ul>
+<li></li>
+</ul>
+
+

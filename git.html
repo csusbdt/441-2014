@@ -1,0 +1,190 @@
+---
+layout: default
+id: git
+title: Git Assignment 
+---
+
+<h1>Git</h1>
+
+<h2>Overview</h2>
+
+<p>
+The Git version control system was originally developed to manage the source code for the Linux kernel. 
+Since then, it has become widely used for many projects, both open and closed source. 
+In this course, you will submit your work on assignments by committing them 
+into a remote Git repository that I set up for you.
+</p>
+
+<p>
+In order for me to create a remote Git repository for you, 
+I need a copy of the public key on the computer your Git client program uses 
+when connecting to remote hosts. 
+After I receive this from you, I will create an empty remote repository for you.
+I will send you instructions on how to clone this repository onto your local computer.
+From that point on, you will work in the folder containing your local repository and
+push commits into your remote repository from it.
+</p>
+
+<p>
+I will present 
+<a href="https://github.com/csusbdt/441-2013/blob/master/GIT_WALK.md">these notes</a>
+about Git in lecture.
+</p>
+
+<p>
+Along with setting up and learning Git,
+you will also practice building a simple C++ program. 
+Git and the tools needed to build distributable programs
+form the development environment for this course.
+</p>
+
+<h2>Instructions (Step 1)</h2>
+
+<p>
+Follow <a href="https://github.com/csusbdt/centos/blob/master/GIT-SUBMISSION.md">these 
+Git submission instructions</a>
+to prepare your system for using Git in this course.
+Make sure that you send me your public key as explained in these instructions.
+</p>
+
+<p>
+Familiarize yourself with documentation on Git
+and perform experiments to improve your understanding and working knowledge of Git.
+</p>
+
+<h2>Instructions (Step 2)</h2>
+
+<p>
+This course will cover 3 development environments:
+make, Xcode and Visual Studio.
+Although you benefit from learning how to setup and work in all 
+of these development environments,
+you only need to learn one for this course.
+</p>
+
+<p>
+The following is a hello program in C++ that you should practice building
+and running in this assignment.
+</p>
+
+<pre>
+#include &lt;iostream>
+
+using namespace std;
+
+int main(int argc, char * args[]) {
+    cout &lt;&lt; "hello" &lt;&lt; endl;
+    cin.get();
+}
+</pre>
+
+<p class="make">
+If you are working under Linux, then you should use 
+<a href="https://www.gnu.org/software/make/">Gnu Make</a>
+to build projects.  You can also use Make to build projects
+under OS X and Windows.
+</p>
+
+<p class="osx">
+If you are working under OS X,
+then you can use Xcode to build projects in this course.
+Xcode is a free download on the App Store.
+</p>
+
+<p class="win">
+If you are working under Windows,
+then you can use Visual Studio to build projects in this course.
+If you are working in JB 360, Visual Studio 2010 is already installed,
+so you don't need to install anything.
+On your laptop or desktop computer at home, 
+there is a free version of Visual Studio named <em>Visual C++ 2010 Express</em>
+that you can install.
+</p>
+
+<p>
+Using the tool(s) of your choice,
+build and run the hello program above.
+Make sure to include a clean target if you are using Make.
+</p>
+
+<p>
+You need to wait for me to send you the clone command to create your repository
+before you begin step 3 of these instructions.
+</p>
+
+<h2>Instructions (Step 3)</h2>
+
+<p>
+After you receive my email with the clone command,
+run the command in your home directory.
+It will look something like the following.
+</p>
+
+<pre>
+cd ~
+git clone your_name@web1.ias.csusb.edu:repo.git 441
+</pre>
+
+<p>
+This will create a folder named <em>441</em> in your home directory,
+so <em>make sure a folder by this name does not exist prior to running the command.</em>
+From this point on, I will refer to this folder by the expression <em>~/441</em>.
+</p>
+
+<p class="callout">
+Tilda <em>~</em> represents a home directory on Unix-like
+operating systems such as Linux and OS&nbsp;X.
+</p>
+
+<p class="callout">
+The git tutorials and git book talk about the <code>git init</code> command,
+and you may have experimented with it. 
+However, do not use <code>git init</code> to create the <em>~/441</em> folder.
+Instead, rely on the <code>git clone</code> command to create this folder for you.
+In our case, git clone is a simpler alternative to the git init command.
+</p>
+
+<p>
+In <em>~/441</em> you will see a file named README.md, 
+which contains some instructions
+to help you configure git on your system.
+Read and follow these instructions.
+</p>
+
+<p>
+The file's extension <em>.md</em> stands for <em>markdown</em>,
+which is a markup language that's designed to be readable in both raw and interpreted forms.
+You can think of it as a lightweight substitute for HTML that many programmers use.
+You should read about 
+<a href="http://daringfireball.net/projects/markdown/syntax">the Markdown syntax</a>.
+</p>
+
+<p>
+For this assignment, create a folder named <em>git</em> within <em>~/441</em>.
+In this folder, you will practice setting up a project designed
+to build a shared code base to many targets, including OS X, Windows, iOS and Android.
+</p>
+
+<p>
+Under <em>~/441/git</em> create a folder named <em>src</em> and place the source
+code for the hello program there.
+Place other project files in a separate folder.
+For example, if you create a Visual Studio project to build the hello program,
+then you could put your project files under <em>~/441/git/win</em>.
+You can use your own naming convention, but keep platform specific 
+project files separate from the platform independent source code.
+If you are using make, then you can put the Makefile under <em>~/441/git</em>.
+</p>
+
+<p>
+Add patterns to <em>~/441/.gitignore</em> to exclude derived,
+temporary and user-specific files from the Git repository such as a.out.
+</p>
+
+<p class="callout">
+I will deduct points from your score on this assignment if you push derived,
+temporary or user-specific files into your remote repository.
+Use <code>git status</code> to see examine the state of your
+working directory and index before committing.
+</p>
+

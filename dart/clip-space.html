@@ -1,0 +1,331 @@
+---
+layout: default
+---
+
+<h1>Clip Space Assignment</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li>Understand the graphics processing pipeline that underlies each frame of animation (the render loop).</li>
+<li>Understand how and when data flows from CPU memory to GPU memory.</li>
+<li>Understand how and when data flows from the vertex shader to the fragment shader.</li>
+<li>Understand the fragement blending stage at the end of the pipeline.</li>
+<li>Understand the concept of clip space.</li>
+<li>Understand face culling.</li>
+<li>Understand homogenous coordinates.</li>
+</ul>
+
+<h2>Overview</h2>
+
+<p>
+In this assignment we take one step toward understanding and mastering OpenGL.
+For this purpose, we create a Dart application that simply 
+renders a rectangle in the center of the web page.
+This assignment builds on the canvas assignment.
+In fact, the first thing you do is to make a copy of the canvas assignment
+as a starting point.
+</p>
+
+<h2>Project Setup</h2>
+
+<p>
+Create a Dart application package named <em>clip-space</em> by making a copy of the <em>canvas</em> folder.
+After this copy operation, the contents of <em>~/441/dart</em> will be the following.
+</p>
+
+<ul>
+<li>canvas</li>
+<li>clip-space</li>
+<li>textures</li>
+</ul>
+
+<p>
+Open the new folder in the dart editor by selecting <em>File ... Open Existing Folder</em>.
+Verify that the copied application runs in Dartium.
+</p>
+
+<p>
+In the clip-space package we will use a library from the vector_math package.
+Add this package as a dependency by editing <em>pubspec.yaml</em> so that it
+contains references to both 
+the <em>browser</em> and <em>vector_math</em> libraries.
+</p>
+
+<h2>Scene Library</h2>
+
+<p>
+In this assignment we will put rendering logic inside a library named <em>scene</em>.
+The main library will continue to hold the first layer of initialization,
+and will be usable with slight changes in other packages we create in this course.
+The scene library will do the actual rendering of a shape,
+which will be a rectangle.
+</p>
+
+<p>
+Create a file named <em>scene.dart</em> with the following contents.
+</p>
+
+<pre>
+library scene;
+
+import 'dart:web_gl';
+
+RenderingContext gl;
+
+init(RenderingContext renderingContext) {
+  gl = renderingContext;
+}
+</pre>
+
+<p>
+This code will serve as a stub while we make modifications to main.dart.
+Ultimately, we will add code to the init function in the scene library to draw a rectangle.
+However, before we do this, let's make sure that we can call the init function
+from main.
+</p>
+
+<p>
+There are a number of different ways to connect the
+main library with the scene library.
+The approach we follow here is to expose the contents of the scene library
+to the main library through an identifier.
+Add the following import statement to main.dart.
+</p>
+
+<pre>
+import 'scene.dart' as scene;
+</pre>
+
+<p>
+Now, we can call the init function in scene with the following.
+</p>
+
+<pre>
+scene.init(gl);
+</pre>
+
+<p>
+Add the above call to init to the main function;
+make it the last thing we do in main.
+<p>
+
+<p>
+Test that the applciation runs with the stub.
+</p>
+
+<h2>Draw Rectangle</h2>
+
+<p>
+Replace the contents of scene with the following.
+</p>
+
+<pre>
+library scene;
+
+import 'dart:web_gl';
+import 'dart:typed_data';
+
+RenderingContext gl;
+
+init(RenderingContext renderingContext) {
+  gl = renderingContext;
+
+  // Compile the vertex shader.
+  Shader vertexShader = gl.createShader(VERTEX_SHADER);
+  gl.shaderSource(vertexShader, """
+    attribute vec3 a_pos;
+    void main() {
+      gl_Position = vec4(a_pos.x - 0.5, a_pos.y - 0.5, 0, 1.0);
+    }
+  """);
+  gl.compileShader(vertexShader);
+  if (!gl.getShaderParameter(vertexShader, COMPILE_STATUS)) {
+    throw gl.getShaderInfoLog(vertexShader);
+  }  
+
+  // Compile the fragment shader.
+  Shader fragmentShader = gl.createShader(FRAGMENT_SHADER);  
+  gl.shaderSource(fragmentShader, """
+    void main() {
+      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }
+  """);
+  gl.compileShader(fragmentShader);
+  if (!gl.getShaderParameter(fragmentShader, COMPILE_STATUS)) {
+    throw gl.getShaderInfoLog(fragmentShader);
+  }
+
+  // Link the shaders into a runnable program.
+  Program program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, LINK_STATUS)) {
+    throw gl.getProgramInfoLog(program);
+  }
+
+  // Make the program current.
+  gl.useProgram(program);
+  
+  // Obtain the handle to the shader program's position attribute.
+  int posLocation = gl.getAttribLocation(program, 'a_pos');  
+
+  // Create a vertex buffer that defines a rectangle.
+  Buffer vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
+  Float32List vertexArray = new Float32List.fromList([
+     0.0,  0.0,  0.0,
+     0.0,  1.0,  0.0,
+     1.0,  0.0,  0.0,
+     1.0,  1.0,  0.0
+  ]);
+  gl.bufferDataTyped(ARRAY_BUFFER, vertexArray, STATIC_DRAW);
+
+  gl.enableVertexAttribArray(posLocation);
+  gl.vertexAttribPointer(posLocation, 3, FLOAT, false, 0, 0);
+  
+  gl.clearColor(0, 0, 0, 1);
+  gl.clear(COLOR_BUFFER_BIT);
+  gl.drawArrays(TRIANGLE_STRIP, 0, 4);
+}
+</pre>
+
+<p>
+Note that we set the clear color and clear the color buffer in scene.
+We will make this a responsibility of the scene.
+For this reason, remove these 2 operations from main.
+</p>
+
+<p>
+Run the application in Dartium and verify that it renders a red rectangle.
+</p>
+
+<h2>Experiment</h2>
+
+<p>
+To better understand the code, make the following changes.
+</p>
+
+<ul>
+<li>Change the background color to white.</li>
+<li>Change the rectangle color to blue.</li>
+</ul>
+
+<h2>Homogenous Coordinates</h2>
+
+<p>
+Read about <a href="http://bishopw.loni.ucla.edu/air5/homogenous.html">Homogenous Coordinates</a>
+and then use this knowledge to modify the vertex shader code so that the 
+rectangle renders at half the original size.
+</p>
+
+<h2>Face Culling</h2>
+
+<p>
+In many situations, you can reduce the load on the graphics system if you enable face culling.
+When the graphics system assembles triangle primitives after running the vertex shader,
+it can discard back facing triangles (or alternatively front facing triangles)
+before rasterizing the triangles into fragments.
+Facing direction depends on the winding order of vertices.
+If the winding order is counter clockwise (the default),
+then vertices that look counter clockwise to the viewer are considered front facing.
+If the windnig order is clockwise,
+then it's the other way around.
+</p>
+
+<p>
+Face culling is disabled by default.
+Use the following to enable it.
+</p>
+
+<pre>
+gl.enable(CULL_FACE);
+</pre>
+
+<p>
+Run the application and observe that the quad is no longer visible.
+If you examine the vertex buffer, you will see that the vertices
+wind in a clockwise direction.
+In a triangle strip, the facing direction is kept consistent with the first triangle,
+so the second triangle is also considered to have clockwise winding.
+By default, clockwise winding means you are viewing the back of the triangle.
+Use the following to change the winding order from the defaul counter clockwise to clockwise.
+</p>
+
+<pre>
+gl.frontFace(CW);
+</pre>
+
+<p>
+Try the above setting and observe the quad is now visible again.
+</p>
+
+<p>
+Use the following to change the culling from the default back faces to front faces.
+Observe that the quad is no longer visible.
+</p>
+
+<pre>
+gl.cullFace(FRONT);
+</pre>
+
+<p>
+Add the following code to explcitly set face culling to default values.
+</p>
+
+<pre>
+gl.enable(CULL_FACE);
+gl.frontFace(CCW);
+gl.cullFace(BACK);
+</pre>
+
+<p>
+These default settings keep the quad from being displayed.
+Rearrange the order of vertices so that the quad is rendered with these defalt settings.
+</p>
+
+<h2>Clip Space Experiment</h2>
+
+<p>
+In OpenGL 2.0 ES, <code>gl_Position</code> is a predefined variable in vertex shaders.
+It represents the position of the vertex in what is called <em>clip space</em>.
+Triangles, lines and points that completely lie outside the box with
+corners (-1, -1, -1) and (1, 1, 1) are "clipped" (discarded) from the processing pipeline
+before being rasterized into fragments.
+The following line of code is from our vertex shader.
+Try different expressions for the X, Y and Z coordinates to test your
+understanding of how clip space works.
+</p>
+
+<pre>
+gl_Position = vec4(a_pos.x - 0.5, a_pos.y - 0.5, 0.0, 1.0);
+</pre>
+
+<h2>Study</h2>
+
+<p>
+I will explain the above code in lecture.
+However, you ought to try to understand it on your own through experimentation
+and reading.
+You can check out the following resources, which I found useful while preparing this assignment.
+</p>
+
+<ul>
+<li><a href="http://www.khronos.org/registry/webgl/specs/latest/1.0/">WebGL Specification</a></li>
+<li><a href="http://bishopw.loni.ucla.edu/air5/homogenous.html">Homogenous Coordinates</a></li>
+<li><a href="http://www.opengl.org/sdk/docs/tutorials/ClockworkCoders/varying.php">Varying variables</a></li>
+<li><a href="http://en.wikibooks.org/wiki/OpenGL_Programming/GLStart/Tut3">Tutorial 3: Drawing Primitives</a></li>
+</ul>
+
+<p>
+Commit your work into your remote repository.
+</p>
+
+<pre>
+cd ~/441/dart
+git add clip-space
+git commit -m "clip-space assignment"
+git push
+</pre> 
+

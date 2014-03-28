@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% if site.safe %}/441-2014{% endif %}/css/normalize.css" />
+    <link rel="stylesheet" href="{% if site.safe %}/441-2014{% endif %}/css/styles.css" />
+
+    <title>{{page.title}}</title>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+    <h1 class="print">{{page.title}}</h1>
+    <header>
+      <ul>
+{% if page.id == "index" %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/" class="selected">CSE 441</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/syllabus.html">syllabus</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/contact.html">contact</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/todo.html">todo</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/notes.html">notes</a></li>
+{% elsif page.id == "id" %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/" class="selected">CSE 441</a></li>
+{% elsif page.id == "syllabus" %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/">CSE 441</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/syllabus.html" class="selected">syllabus</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/contact.html">contact</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/todo.html">todo</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/notes.html">notes</a></li>
+{% elsif page.id == "contact" %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/">CSE 441</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/syllabus.html">syllabus</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/contact.html" class="selected">contact</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/todo.html">todo</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/notes.html">notes</a></li>
+{% elsif page.id == "todo" %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/">CSE 441</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/syllabus.html">syllabus</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/contact.html">contact</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/todo.html" class="selected">todo</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/notes.html">notes</a></li>
+{% elsif page.id == "notes" %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/">CSE 441</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/syllabus.html">syllabus</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/contact.html">contact</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/todo.html">todo</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/notes.html" class="selected">notes</a></li>
+{% else %}
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/" class="selected">CSE 441</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/syllabus.html">syllabus</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/contact.html">contact</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/todo.html">todo</a></li>
+        <li><a href="{% if site.safe %}/441-2014{% endif %}/notes.html">notes</a></li>
+{% endif %}
+      </ul>
+    </header>
+    <div class="container">
+      {{content}}
+    </div>
+  </body>
+
+</html>
+

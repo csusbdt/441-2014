@@ -1,0 +1,167 @@
+---
+layout: default
+---
+
+<h1>Cube</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li></li>
+</ul>
+
+<h2>Reading</h2>
+
+
+<ul>
+<li><a href="http://www.opengl.org/wiki/Face_Culling">Face Culling</a></li>
+<li><a href="http://open.gl/textures">OpenGL Textures</a></li>
+<li><a href="http://open.gl/introduction">OpenGL Tutorial</a></li>
+<li><a href=""></a></li>
+<li><a href=""></a></li>
+</ul>
+
+<h2>Instructions</h2>
+
+<p>
+Create a dart project named <em>anim-loop</em> by making a copy of the <em>textures</em> folder.
+</p>
+
+<p>
+Open the new folder in the Dart editor by selecting <em>File ... Open Existing Folder</em>.
+Verify that the copied application runs in Dartium.
+</p>
+
+<p>
+When script runs in a browser, 
+it can draw into the OpenGL context.
+These drawing operations will be visible the next time the browser repaints its application window.
+Scripts have no control over when the browser will do this.
+However, scripts can run between each repaint event.
+They do this by registering a function with the browser to be called prior to the
+next repaint operation.
+This function is called <code>requestAnimationFrame</code>.
+</p>
+
+<p>
+The function you pass into <code>requestAnimationFrame</code>
+is called only once.
+After it's called, the browser discards the reference it has to it.
+For this reason, animated Web applications
+need to re-register a callback function each time it is called.
+The resulting code looks something like the following.
+</p>
+
+<pre>
+// The time in seconds that the previous frame of animation was rendered.
+double previousSeconds;
+
+void main() {
+  // Create an OpenGL context and perform all other initializations.
+  // ...
+
+  window.requestAnimationFrame((double milliseconds) {
+    previousSeconds = milliseconds / 1000.0;
+    window.requestAnimationFrame(render);
+  });
+}
+
+void render(double milliseconds) {
+  // Convert milliseconds to seconds.
+  double seconds = milliseconds / 1000.0;
+  
+  // Compute the "delta time" between animation frames.
+  double dt = seconds - previousSeconds;
+  previousSeconds = seconds;
+
+  // Execute WebGL and other commands.
+  // ...
+
+  // Schedule render to run after the current frame of animation is rendered.
+  window.requestAnimationFrame(render);
+}
+</pre>
+
+<p>
+In this assignment, you will add code that smoothly moves the textured quad
+in the web page.
+As a first step, incorporate the code given above.
+Because the init function will only run once, you should keep as
+much code in there as possible and just do the minimum required in the
+render method. Because we are using a single shader program
+and drawing one object, we can leave a lot of the set up code in init.
+However, if we draw an additional object or add a second shader program,
+then we will need to move more of the set up code in the render function so that
+it runs with each frame of animation.
+</p>
+
+<p>
+Test to see that your modified application compiles and runs.
+</p>
+
+<h2>Add Movement</h2>
+
+<p>
+As a simple exercise, let's move the image to the left and right on the screen.
+To do this, we determine an x offset <code>xOffset</code> 
+on the CPU side and pass it to the vertex shader as a uniform variable.
+The following code can be done in the render method to compute <code>xOffset</code>.
+</p>
+
+<pre>
+double xOffset = sin(2.0 * PI * seconds / 4.0) * 0.5;
+</pre>
+
+<p>
+To get the above to compile, you'll need to include the dartmath library from dart.
+</p>
+
+<p>
+You need to declare a unform variable in the vertex shader that you can set
+each time the shader program runs.
+The following shows the syntax for this.
+</p>
+
+<pre>
+uniform float u_xOffset;
+</pre>
+
+<p>
+To set the u_xOffset value in the shader, you need to get an instance of 
+UniformLocation and use that in a call to <code>gl.uniform1f</code>.
+The following code shows how to get this object.
+</p>
+
+<pre>
+UniformLocation xOffsetLocation;
+
+// ...
+
+xOffsetLocation = gl.getUniformLocation(program, "u_xOffset");
+</pre>
+
+<p>
+In the render function, you need to add code that passes the x offset
+to the shader.
+</p>
+
+<pre>
+gl.uniform1f(xOffsetLocation, xOffset);
+</pre>
+
+<p>
+With these changes, you are ready to test the application.
+Test that the program renders your animation.
+</p>
+
+<h2>Quiz</h2>
+
+<p>
+Be prepared to answer the following quiz questions.
+</p>
+
+<ul>
+<li>What are uniform variables used for?</li>
+</ul>
+
+

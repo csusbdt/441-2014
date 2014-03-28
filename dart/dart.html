@@ -1,0 +1,177 @@
+---
+layout: default
+---
+
+<h1>Dart Assignment</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li>Learn how to use the Dart Editor to create client-side Web applications.</li>
+</ul>
+
+<h2>Preparation</h2>
+
+<p>
+To complete this assignment, you need to have an account 
+that enables you to log into the computers in JB 360
+or you need to have a laptop that is capable of running the Dart Editor.
+</p>
+
+<p>
+If you are in JB 360, then the Dart editor is already installed.
+If you are using your own laptop or desktop computer,
+then you should <a href="https://www.dartlang.org/">download and install the 
+current stable release of Dart + Editor</a>
+</p>
+
+<h2>Instructions</h2>
+
+<ul>
+<li>Become familiar with the <a href="http://dartlang.org">Dart website</a>.</li>
+<li>Watch <a href="http://www.youtube.com/watch?v=FqsU3TbUw_s">Dart for the modern web developer</a>.</li>
+<li>Complete the 
+    <a href="https://www.dartlang.org/docs/tutorials/get-started/">Get Started Tutorial</a>.
+</li>
+<li>
+  Read <a href="https://www.dartlang.org/docs/dart-up-and-running/contents/ch01.html">Chapter 1:
+  Quick Start</a>.
+</li>
+<li>
+  Study <a href="https://www.dartlang.org/docs/dart-up-and-running/contents/ch02.html">Chapter 2.
+  A Tour of the Dart Language</a>.
+</li>
+<li>
+  Become familiar with the <a href="https://www.dartlang.org/articles/event-loop/">Event Loop and Dart</a>.
+</li>
+</ul>
+
+<h2>Dart Quiz</h2>
+
+<p>
+Be prepared to answer the following questions on a quiz.
+</p>
+
+<ul>
+<li>What is tree shaking and why is it good for Dart applications?</li>
+</ul>
+
+<p>
+What do the following programs print?
+</p>
+
+<pre>
+String getBlue() { return 'blue'; }
+void printColor(String color) { print(color); }
+
+main() {
+  Future future = new Future(getBlue);
+  future.then(printColor);
+  printColor('red');
+}
+</pre>
+
+<pre>
+String getBlue() { return 'blue'; }
+String getGreen() { return 'green'; }
+void printColor(String color) { print(color); }
+
+main() {
+  Future blueFuture = new Future(getBlue);
+  blueFuture.then(printColor);
+  
+  Future greenFuture = new Future(getGreen);
+  greenFuture.then(printColor);
+  
+  printColor('red');
+}
+</pre>
+
+<pre>
+String getBlue() { return 'blue'; }
+
+void printColor(String color) { print(color); }
+
+main() {
+  Future future = new Future(getBlue);
+  Future future2 = future.then(printColor);
+  future2.then(printColor);
+  printColor('red');
+}
+</pre>
+
+<pre>
+String getBlue() { return 'blue'; }
+
+String printColor(String color) { print(color); return color; }
+
+main() {
+  Future future = new Future(getBlue);
+  Future future2 = future.then(printColor);
+  future2.then(printColor);
+  printColor('red');
+}
+</pre>
+
+
+<pre>
+main() {
+  print('red');
+  Future<int> future = new Future<int>(() => print('blue'));
+  print('green');
+}
+</pre>
+
+<pre>
+main() {
+  print('red');
+  Future future = new Future(() => print('blue'));
+  future.then((_) => print('grey'));
+  print('green');
+}
+</pre>
+
+<pre>
+main() {
+  print('red');
+  Future future = new Future(() => print('blue'));
+  Future future2 = future.then((_) => throw new Exception());
+  future2.catchError((e) => print('orange'));
+  print('green');
+}
+</pre>
+
+<pre>
+main() {
+  print('red');
+  new Future(() => throw new Exception())
+    .then((_) => print('black'))
+    .catchError((e) => print('orange'));
+  print('green');
+}
+</pre>
+
+<pre>
+main() {
+  print('red');
+  new Future(() => throw new Exception())
+    .catchError((e) => print('orange'))
+    .then((_) => print('black'));
+  print('green');
+}
+</pre>
+
+<pre>
+main() {
+  new Future(() {
+    return 'red';
+  })
+  .then((v) => print(v));
+}
+</pre>
+
+<pre>
+
+</pre>
+
+

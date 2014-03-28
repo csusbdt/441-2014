@@ -1,0 +1,108 @@
+---
+layout: default
+id: notes
+title: Course Notes
+---
+
+<h2>Changes from Last Year</h2>
+
+<ul>
+<li>Removal of cocos2d-x as a reference project.</li>
+<li>Removal of OpenGL.</li>
+<li>Adoption of Simple DirectMedia Layer as a portability layer.</li>
+<li>Increased focus on object-oriented design.</li>
+<li>Coverage of steering behaviors.</li>
+</ul>
+
+<h2>Recommended Videos</h2>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=MeMPCSqQ-34">Game Development with SDL 2.0</a> (must view)</li>
+<li><a href="https://www.youtube.com/watch?v=r3wDnOAjrtk">Open Source Tools for Game Development</a> (optional)</li>
+</ul>
+
+<!--
+
+<h2>Dart Notes</h2>
+
+<p>
+<a href="dart/">Abandoned Dart Lessons</a>
+</p>
+
+<p>
+<a href="http://www.twitch.tv/notch/b/487318324">Making a game from scratch in 48 hours</a>
+</p>
+
+<p>
+<a href="http://www.octodadgame.com/tech-behind-octodad-dadliest-catch/">Tech 
+    Behind Octodad: Dadliest Catch</a>.
+</p>
+
+<p>
+Overview of <a href="http://caniuse.com/webgl">support for WebGL</a>.
+</p>
+
+<p>
+To integrate Dart within a C++ program,
+see <a href="https://www.dartlang.org/articles/native-extensions-for-standalone-dart-vm/">Native 
+Extensions for the Standalone Dart VM</a>.
+</p>
+
+<p>
+<a href="http://open.gl/">OpenGL tutorial for standalone Desktop programs</a>
+</p>
+
+<h2>OpenGL Notes</h2>
+
+<p>
+Only one vertex buffer can be active at a time.
+</p>
+
+<p>
+Only one shader program can be active at a time.
+</p>
+
+<h2>Graphics Pipeline</h2>
+
+<p>
+Graphics systems produce animations by rendering a series of frames.
+The pixel information that goes to the screen comes from a block of memory
+referred to as the frame buffer.
+They use a double buffering approach to ensure that partially updated frame buffers are not rendered.
+Without double buffering, unpleasant visual artifacts would appear.
+The hardware refreshes the display from a front buffer while applications
+write into a back buffer.
+After writing to the back buffer completes,
+the system swaps the front and back buffers.
+</p>
+
+<p>
+When your render function is called,
+you can affect the state of the back frame buffer before it is swapped with the front buffer.
+This swapping will happen after you return from your render function
+but before your render function is called again.
+</p>
+
+<p>
+The OpenGL draw functions that you call in your code
+result in a sequence of operations that occur within 
+what is referred to as the <em>graphics pipeline<em>
+or the <em>rendering pipeline</em>.
+The following is my understanding of the process (minus the geometry shader step),
+which may be issing something.
+</p>
+
+<ul>
+<li>Multiple instances of the active vertex shader execute in parallel for the vertex data that you specified.</li>
+<li>The vertex shader outputs a coordinate in clip space and possibly other varying data, such as UV coordinates.</li>
+<li>Point, line and triangle primatives are assembled with vertices in clip space coordinates.</li>
+<li>Primitives that completely lie outside of the box with corners (-1, -1, -1) and (1, 1, 1) are discarded.</li>
+<li>The remaining primitives are rasterized into fragments and their corresponding varying variables are computed.</li>
+<li>Multiple instances of the active fragment shader execute in parallel for the resulting fragments.</li>
+<li>The fragment shader either discards the fragment or outputs an RGBA color value.</li>
+<li>If enabled, fragments with the same position are blended.</li>
+</ul>
+
+-->
+
+

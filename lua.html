@@ -1,0 +1,205 @@
+---
+layout: default
+id: lua
+title: Lua Assignment
+---
+
+<h1>Lua</h1>
+
+<h2>Overview</h2>
+
+<p>
+Lua is an embeddable scripting engine that may be 
+the most widely used scripting engine in the video game industry.
+It is small, fast and easy to embed.
+</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://www.lua.org/">Lua Website</a></li>
+<li><a href="http://www.dcc.ufrj.br/~fabiom/lua/">Programming in Lua Course Notes</a></li>
+<li><a href="http://www.lua.org/manual/5.2/manual.html">Lua 5.2 Reference Manual</a></li>
+</ul>
+
+<h2>Set Up</h2>
+
+<p>
+Download the source distribution of Lua and expand into <em>~/lua-5.2.3</em>.
+Assuming that you downloaded the source archive into
+<em>~/Downloads</em>, you can use the following command to do this.
+(Under Windows, run the following in the Git Bash shell.) 
+</p>
+
+<pre>
+cd ~
+tar -zxvf ~/Downloads/lua-5.2.3.tar.gz
+</pre>
+
+<h2>Build Lua Under OS X (and Linux)</h2>
+
+<p>
+If you are using Windows, then skip this section.
+</p>
+
+<p>
+Run the following to build and install.
+If you are under Linux, then replace <em>macosx</em> with <em>linux</em> in the following.
+</p>
+
+<pre>
+cd ~/lua-5.2.3
+make macosx
+sudo make macosx install
+</pre>
+
+<p>
+The Lua command line interpreter and command line compiler are placed under the following.
+</p>
+
+<pre>
+/usr/local/bin
+</pre>
+
+<p>
+The Lua library <em>liblua.a</em> is placed under the following.
+</p>
+
+<pre>
+/usr/local/lib
+</pre>
+
+<p>
+The Lua header files are placed under the following.
+</p>
+
+<pre>
+/usr/local/include
+</pre>
+
+<p>
+Under Linux, the above locations will likely be different.
+</p>
+
+<h2>Build Lua Under Windows</h2>
+
+<p>
+Create an empty project to create a C++ command line program.
+Add the source code files from Lua, omiting <em>luac.c</em>.
+Do a release build and look for <em>lua.exe</em>.
+Use this executable to run the command line interpreter.
+You can copy this to any location you want
+and then delete the Visual Studio project.
+</p>
+
+<h2>Read and Experiment</h2>
+
+<p>
+Study the references provided above.
+Design and carry out experiments to build your understanding and ability to program with Lua.
+</p>
+
+<h2>Study the Manual</h2>
+
+<p>
+Create a folder <em>~/441/lua</em>.
+In this folder, put your answers to the following questions in a file named <em>answers.md</em>.
+Include the questions with each answer.
+</p>
+
+<p>
+Note that the questions are organized under the relevant 
+sections in the Lua reference manual.
+</p>
+
+<p>
+These questions will appear on one or more exams in this course,
+so practice answering them from memory.
+</p>
+
+<h3>Section 1</h3>
+
+<p>Lua is written in <em>clean C</em>.  What is clean C?</p>
+
+<p>Lua only runs embedded inside another program, referred to as a <em>host</em>.
+In what language is the host written?</p>
+
+<p>The Lua distribution comes with an executable named <em>lua</em>. 
+What does the lua executable do?</p>
+
+<h3>Section 2.1</h3>
+
+<p>What does it mean that Lua is a dynamically typed language?</p>
+
+<p>List the 8 types in Lua.</p>
+
+<p>How many possible values of type nil exist in Lua?</p>
+
+<p>How many possible values of type boolean exist in Lua?</p>
+
+<p>What C datatype corresponds to the Lua number datatype?</p>
+
+<p>Strings are immutable sequences of bytes.  What does immutable mean?</p>
+
+<p>What byte values are allowed in Lua strings?</p>
+
+<p>A userdata value is a pointer to a block of raw memory created and modified by the host.
+What 2 operations on userdata values are built into Lua?</p>
+
+<p>Do Lua threads represent threads from the operating system or something else?</p>
+
+<p>Values of type <em>table</em> are associative arrays that support the <code>a[key] = value</code>.
+Which Lua values are not allowed as a key in a table? 
+Which Lua value is not allowed as a value in a table?</p>
+
+<h3>Section 2.2</h3>
+
+<p>What does the variable <code>_G</code> refer to in a Lua chunk?</p>
+
+<p>
+If the following lines of code were in a file named <em>main.lua</em>,
+what would the program print if main.lua were
+loaded and run by the command line interpreter?
+</p>
+
+<pre>
+x = 1
+print(x)
+print(_G.x)
+local x = 2
+print(x)
+print(_G.x)
+</pre>
+
+<h3>Section 2.3</h3>
+
+<p>Calling a Lua function may generate an error, in which case execution returns to the host.
+What function do you use in Lua code to catch errors so that control remains in the Lua code?</p>
+
+<p>How do you explicitly generate an error in Lua code?</p>
+
+<h3>Section 2.4</h3>
+
+<p>Do tables have metatables by default?</p>
+
+<p>
+The following Lua program defines 2 vectors and tries to add them together.
+Add metatable code to the program so the assertions are true.
+</p>
+
+<pre>
+v1 = { x =  1, y =  2 }
+v2 = { x = 10, y = 20 }
+-- Add code here.
+v3 = v1 + v2
+assert(v3.x == 11)
+assert(v3.y == 22)
+</pre>
+
+<h3>Section 2.6</h3>
+
+<p>
+What's the difference between an operating system thread and a coroutine?
+</p>
+
+

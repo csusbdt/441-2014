@@ -1,0 +1,209 @@
+---
+layout: default
+id: embed
+title: Embed Assignment
+---
+
+<h1>Embedding Lua</h1>
+
+<h2>Overview</h2>
+
+<p>
+In this activity,
+we will embed Lua in a C++ program that uses SDL.
+We do this for 2 purposes.
+First, this will increase the flexibility by which we build
+out our games by putting most of the game logic in Lua scripts.
+Second, it will facilitate construction of maps without having to build a separate map editor
+because the game designer will be able to edit maps and adjust NPC AI using the command line.
+</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://www.lua.org/">Lua Website</a></li>
+<li><a href="http://www.dcc.ufrj.br/~fabiom/lua/">Programming in Lua Course Notes</a></li>
+<li><a href="http://www.lua.org/manual/5.2/manual.html">Lua 5.2 Reference Manual</a></li>
+</ul>
+
+<h2>Set Up</h2>
+
+<p>
+Create a folder <em>~/441/lua</em> for this assignment.
+Start by creating a project that builds the Hello SDL program 
+from <a href="sdl.html">the SDL assignment</a>.
+Do not include the work you did on the tutorial.
+You should repeat the project creation steps to practice setting up new projects.
+</p>
+
+<p>
+Build and test your hello program.
+</p>
+
+<h2>Add Lua</h2>
+
+<p>
+The next step is to add code that creates an instance of the Lua virtual machine.
+To call Lua functions, we need to include the following header file in main.cpp.
+</p>
+
+<pre>
+#include "lua.hpp"
+</pre>
+
+<p>
+The following code creates an instance of the Lua virtual machine.
+Add this to main.cpp.
+</p>
+
+<pre>
+lua_State * lua = luaL_newstate();
+if (lua == nullptr) {
+    SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_ERROR,
+        "Hello Program",
+        "Failed to create Lua state.",
+        nullptr);
+    return 1;
+}
+</pre>
+
+<p class="osx">
+Under OS X, add the following lines to the build script
+to statically link with the Lua library.
+</p>
+
+<pre class="osx">
+-I/usr/local/include          \
+-L/usr/local/lib              \
+-llua                         \
+</pre>
+
+<p class="win">
+Under Windows, add <em>lua.lib</em> to your Visual Studion project folder.
+Add <code>lua.lib</code> to the libraries field in project settings.
+Add Lua's source folder to your application project's include search path
+and to the project's library search path.
+</p>
+
+<p>
+Build and run the project.  Debug until the program builds and runs correctly.
+</p>
+
+<h2>Call into Lua from C++</h2>
+
+<p>
+We will now add code that runs a Lua script from the program.
+</p>
+
+<p>
+Create file <em>~/441/embed/main.lua</em> with the following contents. 
+</p>
+
+<pre>
+print("hello")
+</pre>
+
+<p>
+Verify from the command line that you can run this scipt.
+The following command should print <em>hello</em> in the console window.
+</p>
+
+<pre>
+lua main.lua
+</pre>
+
+<p>
+Add the following code to load and run main.lua.
+</p>
+
+<pre>
+int result = luaL_loadfile(lua, "main.lua");
+if (result != LUA_OK) {
+    std::cout &lt;&lt; lua_tostring(lua, -1) &lt;&lt; std::endl;
+    return 1;
+}
+result = lua_pcall(lua, 0, 0, 0);
+if (result != LUA_OK) {
+    std::cout &lt;&lt; lua_tostring(lua, -1) &lt;&lt; std::endl;
+    return 1;
+}
+</pre>
+
+<p>
+Build and run the program, and notice the error message.
+The function <code>luaL_loadfile</code> is part of Lua's
+standard library which needs to be initialized with the following.
+</p>
+
+<pre>
+luaL_openlibs(lua);
+</pre>
+
+<p>
+Add the library initialization code and
+verify that the program now works correctly.
+</p>
+
+<h2>Call C++ from Lua</h2>
+
+<p>
+In this step,
+we add code that lets script display the SDL message box.
+</p>
+
+<p>
+The following code defines a function
+that displays an SDL message box.
+</p>
+
+<pre>
+int msgbox(lua_State * L) {
+    int numberOfArguments = lua_gettop(L);
+    if (numberOfArguments != 1) {
+        return luaL_error(L, "msgbox requires 1 argument.");
+    }
+    const char * msg = luaL_checkstring(L, 1);
+    if (msg == nullptr) {
+        return luaL_error(L, "Argument to msgbox not a string.");
+    }
+    SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_INFORMATION, 
+        "CSE 441", 
+        msg, 
+        nullptr);
+    return 0;
+}
+</pre>
+
+<p>
+Notice that the above code takes a pointer to the Lua state;
+arguments and return values are transferred between C++ and Lua
+through a stack that is maintained as part of the Lua state.
+Use the following code to register the msgbox function with Lua.
+</p>
+
+<pre>
+lua_register(lua, "msgbox", msgbox);
+</pre>
+
+<p>
+Add a call to the msgbox function inside main.lua.
+</p>
+
+<pre>
+msgbox("Hello from Lua.")
+</pre>
+
+<p>
+Test that you program now displays the message box.
+</p>
+
+<h2>Submit Your Work</h2>
+
+<p>
+Before adding your files to the repository,
+remember to omit derived, temporary and user-specific files.
+Also, adhere to the readability criteria in the course syllabus.
+</p>
+

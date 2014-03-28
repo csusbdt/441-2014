@@ -1,0 +1,89 @@
+---
+layout: default
+---
+
+<h1>Point Light</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li>Learn how to implement a point light source</li>
+</ul>
+
+<h2>Reading</h2>
+
+
+<ul>
+<li><a href=""></a></li>
+</ul>
+
+<h2>Instructions</h2>
+
+<p>
+Create a dart project named <em>point-light</em> by making a copy of the <em>anim-loop</em> folder.
+</p>
+
+<p>
+We will add code that simulates a point source of light at position (0, 0, .25).
+The only change we make is to the vertex and fragment shaders.
+</p>
+
+<p>
+To calculate the angle of incidence 
+between the light source and the surface normal,
+We need to pass the interpolated vertex position 
+to the fragment shader.
+Add the following of a new varying variable to the vertex shader.
+</p>
+
+<pre>
+varying vec3 v_pos;
+</pre>
+
+<p>
+Replace the main function of the vertex shader with the following.
+</p>
+
+<pre>
+v_uv = a_uv;
+v_pos = vec3(a_pos.x - 0.5 + u_xOffset, a_pos.y - 0.5, 0.0);
+gl_Position = vec4(v_pos, 1.0);
+</pre>
+
+<p>
+Replace the fragment shader with the following.
+</p>
+
+<pre>
+precision highp float;
+const vec3 lightPosition = vec3(0.0, 0.0, 0.3);
+const vec3 normal = vec3(0.0, 0.0, 1.0);
+uniform sampler2D u_tex;
+varying vec2 v_uv;
+varying vec3 v_pos;
+void main() {
+  float lightValue = dot(normalize(lightPosition - v_pos), normal);
+  vec4 col = texture2D(u_tex, v_uv);
+  if (col.a > 0.0) {
+    gl_FragColor = col * lightValue;
+  } else {
+    discard;
+  }
+}
+</pre>
+
+<p>
+Test to see that your modified application compiles and runs.
+</p>
+
+<h2>Quiz</h2>
+
+<p>
+Be prepared to answer the following quiz questions.
+</p>
+
+<ul>
+<li></li>
+</ul>
+
+

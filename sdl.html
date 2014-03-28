@@ -1,0 +1,246 @@
+---
+layout: default
+id: sdl
+title: SDL Assignment
+---
+
+<h1>SDL</h1>
+
+<h2>Overview</h2>
+
+<p>
+Simple DirectMedia Layer (SDL) is a free, open source
+library that simplifies cross-platform development.
+In this course, we will use SDL 2.0.
+</p>
+
+<p class="callout">
+Most tutorials and articles on the Web deal with SDL 1.2.
+There are significant diffences between SDL 1.2 and 2.0, so keep this in mind.
+</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://wiki.libsdl.org/FrontPage">SDL Website</a></li>
+<li><a href="http://www.willusher.io/pages/sdl2/">SDL 2 Tutorial</a></li>
+<li><a href="http://www.youtube.com/watch?v=MeMPCSqQ-34">Game Development with SDL 2.0</a> (video)</li>
+<li><a href="http://gamedevelopment.tutsplus.com/articles/gamedev-glossary-what-is-blitting--gamedev-2247">What Is "Blitting"?</a></li>
+<li><a href="http://meandmark.com/blog/2012/01/using-sdl-with-xcode-4/">Using SDL with Xcode</a></li>
+</ul>
+
+<h2>Instructions</h2>
+
+<p>
+Create folder <em>~/441/sdl</em> to store the files you create to complete this assignment.
+</p>
+
+<p>
+Create file <em>~/441/sdl/main.cpp</em> with the following contents.
+</p>
+
+<pre>
+#include &lt;iostream>
+#include "SDL.h"
+
+int main(int argc, char * argv[])
+{
+    if (SDL_Init(SDL_INIT_EVERYTHING) == -1){
+        std::cout &lt;&lt; SDL_GetError() &lt;&lt; std::endl;
+        return 1;
+    }
+    SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_INFORMATION,
+        "Hello Program",                      
+        "Hello SDL",                      
+        nullptr);
+    return 0;
+}
+</pre>
+
+<p>
+This file comprises our entire program at this point.
+Your objective is to setup a project that builds this program correctly.
+This depends on the development environment you are working in.
+</p>
+
+<h2>Install SDL for OS X</h2>
+
+<p>
+If you are working under windows, skip this section.
+</p>
+
+<p>
+Download the source distribution of SDL2.
+Expand and run the following in the expanded folder.
+</p>
+
+<pre>
+./configure 
+make
+sudo make install
+</pre>
+
+<h3>Project Setup with Make</h3>
+
+<p>
+Create <em>~/441/sdl/build-osx.sh</em>
+with the following contents.
+</p>
+
+<pre>
+clang++ `sdl2-config --libs --cflags` main.cpp
+</pre>
+
+<p>
+Make the build script runnable.
+</p>
+
+<pre>
+chmod +x build-osx.sh
+</pre>
+
+<p>
+Run the script and run the resulting executable.
+</p>
+
+<pre>
+./build.sh
+./a.out
+</pre>
+
+<p class="callout">
+The build command above builds an executable that dynamically links to SDL.
+If we distribute a program with dynamic linkage,
+then we need to add the SDL dynamic library to the application bundle.
+I hope to cover this in a future assignment.
+</p>
+
+<p>
+When targeting iOS, I believe we will need to 
+build our program with static linkage to SDL.
+The following command shows how to statically link when targeting OS X.
+The command to build for iOS should be similar.
+</p>
+
+<pre>
+clang++ `sdl2-config --libs --cflags --static-libs` -Bstatic main.cpp
+</pre>
+
+<h3>Xcode Project Creation</h3>
+
+<p>
+In Xcode, select File ... New ... Project.
+Create a <em>Cocoa Application</em> under the OS X Application category.
+Specify <em>osx</em> as the application name.
+Click Next and navigate to <em>~/441/sdl</em>.
+This will create a folder <em>~441/sdl/osx</em> with the project files in it.
+</p>
+
+<p>
+Delete and <em>move to trash</em> the following files.
+</p>
+
+<ul>
+<li>AppDelegate.h</li>
+<li>AppDelegate.m</li>
+<li>MainMenu.xib</li>
+<li>main.m (under supporting files)</li>
+</ul>
+
+<p>
+Add main.cpp to the project.
+</p>
+
+<p>
+Add <em>/usr/local/lib/libSDL2.dylib</em> to your project frameworks.
+To "go to" hidden folder <em>/usr/local</em>
+in the finder window, press SHIFT OPTION G and enter the path <em>/usr/local</em>.
+</p>
+
+<p>
+Select Buid Settings.
+Go to the Search Paths section.
+Double click the rightmost part of the line titled
+<em>User Header Search Paths</em>.
+Add the following path.
+</p>
+
+<pre>
+/usr/local/include/SDL2
+</pre>
+
+<p>
+Build and run.
+</p>
+
+<h2>Project Setup with Visual Studio</h2>
+
+<p>
+Download the development libraries for Windows.
+The file name is SDL2-devel-2.0.3-VC.zip.
+</p>
+
+<p>
+Expand the zip file and move the extracted SDL2-2.0.3 folder to your home dir.
+In my case, this is the following.
+</p>
+
+<pre>
+C:\Users\turner\SDL2-2.0.3
+</pre>
+
+<p>
+Create an empty C++ project, call the project “win” and place under ~/441/sdl. 
+</p>
+
+<p>
+Add ~/441/sdl/main.cpp to the project.
+</p>
+
+<p>
+Open the project properties window and make the following changes.
+</p>
+
+<ul>
+<li>Under Debugging, set the environment to the following:
+    <pre>Path=$(PATH);$(HOMEPATH)/sdl2-2.0.3/lib/x86</pre>
+</li>
+<li>Under C/C++ ... General, add the following additional include directory:
+    <pre>$(HOMEPATH)\sdl2-2.0.3\include</pre>
+</li>
+<li>Under C/C++ ... Code Generation, set the runtime library to <em>Multi-threaded DLL (/MD)</em>.</li>
+<li>Under Linker ... General, add the following additional library directory:
+    <pre>$(HOMEPATH)/sdl2-2.0.3/lib/x86</pre>
+</li>
+<li>Under Linker ... Input, add the following additional dependences: 
+    <pre>SDL2.lib SDL2main.lib</pre>
+</li>
+<li>Under Linker ... System, set the SubSystem to <em>Console</em>.</li>
+</ul>
+
+<p>
+Build and run.
+</p>
+
+<h2>Tutorial</h2>
+
+<p>
+In the project you have set up,
+do the <a href="http://www.willusher.io/pages/sdl2/">SDL 2 Tutorial</a>.
+Keep platform-independent code in an <em>src</em> folder that
+is separate from any platform-dependent project files.
+</p>
+
+<p>
+As you progess through the tutorial, you 
+will need to download the libraries SDL2_image and SDL2_ttf
+and configure your project to use them.
+</p>
+
+<p>
+Commit and push your work into your remote repository.
+Make sure that you omit derived, temporary and user-specific files.
+</p>
+
+

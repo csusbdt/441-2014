@@ -1,0 +1,432 @@
+---
+layout: default
+---
+
+<h1>Canvas Assignment</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li>Become familiar with the Dart Editor.</li>
+<li>Become familiar with packages and libraries.</li>
+<li>Learn how to incorporate OpenGL based graphics in Web pages.</li>
+</ul>
+
+<h2>Walk-Through Instructions</h2>
+
+<p>
+Create folder <em>~/441/dart/</em> to contain the dart packages (aka projects)
+you will create in this course.
+Start up Dart Editor and create a new Dart application 
+named <em>canvas</em> and stored under folder <em>~/441/dart/</em>.
+In the application creation window, unselect the box to generate sample content. 
+The Dart Editor creates folder <em>~/441/dart/canvas</em> to hold the files and folders
+that will comprise your canvas application package,
+and adds this package to your Dart Editor workspace.
+</p>
+
+<p class="callout">
+You can "delete" entire packages from your workspace without deleting the actual
+files from the file system.
+Deleting files within your package will also delete them from the file system.
+</p>
+
+<p>
+Subsequent instructions are to be done within the canvas package folder.
+</p>
+
+<h3>Package Dependencies</h3>
+
+<p>
+Create a new file named <em>pubspec.yaml</em> in your canvas package.
+When you do this, the Dart Editor will generate initial content for this file
+that you can examine in the editor.
+The Dart Editor reads the contents of this file to determine which other packages
+your package depends on.
+</p>
+
+<p>
+The canvas application will depend on a built-in Dart package named <em>browser</em>.
+Use the Dart Editor to add the browser package by modifying pubspec.yaml.
+</p>
+
+<p>
+Observe that Dart creates a folder named <em>packages</em> in the project folder.
+Under the packages folder is a file named <em>browser</em>,
+which is a reference to the browser package folder that comes
+with the Dart Editor.
+The editor also generates <em>pubspec.lock</em>,
+which tells Dart which specific version of the packages the code depends on.
+</p>
+
+<p>
+The pubspec.yaml file should be added to version control in all cases.
+For application packages, pubspec.lock should be added to version control.
+For library packages that multiple packages depend on,
+pubspec.lock should not be added to version control.
+In this case, library packages should be tested against
+the range of versions present in the pubspec.yaml file.
+</p>
+
+<p>
+The name <em>pub</em> refers to Dart's package manager.
+You can remember the name from the fact that a pub is a place where you play darts.
+The name <em>yaml</em> is short for <em>yet another markup language</em>,
+which describes what it is.
+</p>
+
+<h3>HTML File</h3>
+
+<p>
+Instances of browser-based Dart applications are created within Web pages,
+which means they are specified in the HTML code that define Web pages.
+Instances of command line applications written in Dart, such as servers,
+are created from the command line without the need of HTML.
+</p>
+
+<p>
+Create a file named <em>index.html</em> at the top level of the canvas package folder.
+Observe that Dart adds boilerplate code to this file automatically.
+This behavior can probably be turned off or the boilerplate modified,
+but we will not investigate this in this course.
+If you do not see any code appearing in your index.html file, it's not a problem
+(unless you typed in the <em>html</em> file name extension incorrectly).
+At the time of this writing, Dart generated the following.
+</p>
+
+<pre>
+&lt;!DOCTYPE html>
+
+&lt;html>
+  &lt;head>
+    &lt;title>index&lt;/title>
+  &lt;/head>
+ 
+  &lt;body>   
+    &lt;p id="text">&lt;/p>
+    &lt;script type="application/dart" src="index.dart">&lt;/script>
+    &lt;!-- for this next line to work, your pubspec.yaml file must have a dependency on 'browser' -->
+    &lt;script src="packages/browser/dart.js">&lt;/script>
+  &lt;/body>
+&lt;/html>
+</pre>
+
+<p
+Notice the underlining of <em>index.dart</em> in the first script element.
+If you hover over this, Dart Editor tells us that "the target URI does not exist,"
+which for us means the file does not exist in the project folder.
+This file should contain a main function to serve as the application entry point.
+We will use a file named <em>main.dart</em> for this purpose rather than <em>index.dart</em>.
+</p>
+
+<p>
+Replace the entire boilerplate code in
+<em>index.html</em> with the following code.
+</p>
+
+<pre>
+&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;meta charset="utf-8">
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge">
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+    &lt;style>
+      body { background-color: #000; margin: 0; padding: 0; }
+      #canvas { position: absolute; top: 0px; left: 0px; margin: 0; padding: 0; z-index: -1; }
+    &lt;/style>
+    &lt;title>Canvas Assignment&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;canvas id="canvas">&lt;/canvas> 
+    &lt;script type="application/dart" src="main.dart">&lt;/script>
+    &lt;script src="packages/browser/dart.js">&lt;/script>
+  &lt;/body>
+&lt;/html>
+</pre>
+
+<p>
+The above code will serve as boilerplate code for index.html in the packages
+we create in this course.
+</p>
+
+<h3>Dart Code</h3>
+
+<p>
+Notice that Dart Editor indicates a problem with our reference to main.dart.
+To fix this, create file <em>main.dart</em> with the following contents.
+</p>
+
+<pre>
+library main;
+
+void main() {
+  print('OK');
+}
+</pre>
+
+<p>
+The first line of main.dart defines a library named <em>main</em>
+for our canvas application package.
+In general, packages are comprised of libraries.
+Packages do allow identifiers to go into a global namespace,
+but might lead to limitiations and problems later on,
+so we will organize all of our code within named libraries.
+</p>
+
+<p>
+Right click index.html and select Run in Dartium.
+Verify that the program prints OK to the console.
+</p>
+
+<h3>Canvas Element</h3>
+
+<p>
+Modern browsers support an HTML element named <em>canvas</em>,
+which enables script to render 2D and 3D graphics within a rectangular region in Web pages.
+For rendering 3D graphics, browsers support OpenGL ES 2.0,
+which is the same version of OpenGL supported in Android, iOS and other mobile operating systems.
+This version of OpenGL is based on the programmable pipeline and thus requires the use of shaders.
+Keep this in mind when you look at sample code;
+if the sample code is based on the fixed graphics pripeline, 
+it won't work in OpenGL ES 2.0.
+</p>
+
+<p class="callout">
+The support of OpenGL ES 2.0 through the canvas element is referred to as <em>WebGL</em>.
+</p>
+
+<p>
+We already have a canvas element in the HTML file.
+To draw into it,
+we need to obtain a reference to it.
+For this purpose, add the following code to the main function.
+</p>
+
+<pre>
+CanvasElement canvas = querySelector("#canvas");
+canvas.width = 200;
+canvas.height = 100;
+</pre>
+
+<p>
+Observe how the Dart Editor reports that <code>CanvasElement</code> is undefined.
+CanvasElement is part of the html library with the browser package.
+We have already specified the browser package as a dependency;
+however, we still need to import its html library into our main library.
+To do this, add the following import statement to main.dart just after the
+library declaration.
+</p>
+
+<pre>
+library main;
+import 'dart:html';
+</pre>
+ 
+<p>
+Run the application in Dartium.
+Notice that the entire Web page is black.
+This is because we have set the background color of the HTML
+body element to black (#ffffff).
+</p>
+
+<p>
+The following code gets an OpenGL rendering context from the canvas element.
+Add this to the main function.
+</p>
+
+<pre>
+  RenderingContext gl = canvas.getContext("webgl");
+  if (gl == null) gl = canvas.getContext("experimental-webgl");
+</pre>
+
+<p>
+Observe how the Dart Editor reports that <code>RenderingContext</code> is undefined.
+RenderingContext is part of the web_gl library within the browser package,
+which is a package dependency we have already configured.
+So all we need to do is import the web_gl library from it.
+Add the following import to solve this problem.
+</p>
+
+<pre>
+import 'dart:web_gl';
+</pre>
+
+<p>
+If you test the application again,
+you won't see anything different.
+If we add the following code,
+we will finally get to see some visual effect.
+</p>
+
+<pre>
+gl.viewport(0, 0, 200, 100);
+gl.clearColor(1, 0, 0, 1);
+gl.clear(COLOR_BUFFER_BIT);
+</pre>
+
+<p>
+This code viewport of the graphics context size to the same size as the canvas element.
+It also sets the clear color to red and then calls a clear function
+replace the graphics output buffer with the clear color.
+Run the application in Dartium and observe the 200 by 100 pixel red rectangle
+that gets displayed.
+</p>
+
+<p>
+In this course, we will cover the entire Web page with the canvas.
+Add the following code to do this.
+</p>
+
+<pre>
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+gl.viewport(0, 0, canvas.width, canvas.height);
+</pre>
+
+<p class="callout">
+At the moment, on my system, I need to refresh the Web page for this to work.
+This is either a bug in the underlying system or my approach to the problem is incorrect.
+</p>
+
+<p>
+If you try resizing the browser window to make it larger,
+you will see that the canvas element does not dynamically
+adjust to fill the new window.
+The following version of main.dart
+adjusts the canvas and viewport sizes dynamically
+whenever on window resize events.
+Replace the contents of main.dart with the following code.
+</p>
+
+<pre>
+import 'dart:html';
+import 'dart:web_gl';
+
+RenderingContext gl;
+
+void main() {
+  CanvasElement canvas = querySelector("#canvas");
+  
+  gl = canvas.getContext("webgl");
+  if (gl == null) gl = canvas.getContext("experimental-webgl");
+
+  window.onResize.listen((_) => onResize());
+  onResize();
+
+  gl.clearColor(1, 0, 0, 1);
+  gl.clear(COLOR_BUFFER_BIT);
+}
+
+void onResize() {
+  CanvasElement canvas = querySelector("#canvas");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  gl.viewport(0, 0, canvas.width, canvas.height);  
+}
+</pre>
+
+<h2>Commit Work</h2>
+
+<p>
+Before committing your work into the repository,
+you should know which folders and files are generated by Dart
+and therefore should be omitted from version control.
+The contents of the canvas folder are as follows.
+</p>
+
+<pre>
+canvas
+   packages
+      browser
+   pubspec.lock
+   pubspec.yaml
+   index.html
+   main.dart
+</pre>
+
+<p>
+Notice the folder named <em>packages</em>.
+This folder should be omitted from version control
+because Dart generates it from <em>pubspec.yaml</em> when needed.
+Actually, on my OS X system, the folder 
+<em>packages/browser</em> is an
+alias that references the following location.
+</p>
+
+<pre>
+/Users/turner/.pub-cache/hosted/pub.dartlang.org/browser-0.9.1/lib
+</pre>
+
+<p>
+This path points to the <em>browser</em> package that
+was downloaded by the Dart package manager (named <em>pub</em>)
+as a result of processing <em>pubspec.yaml</em>.
+This path will only be valid for my system,
+which is another reason the folder should not be placed under version control.
+</p>
+
+<p>
+We need to omit the packages folder from version control
+for all the projects we create in this course.
+We can tell git to ignore them all
+by including the name <em>packages</em> as a line in <em>.gitignore</em>.
+Create file <em>~/441/.gitignore</em> with the following contents.
+</p>
+
+<pre>
+packages
+</pre>
+
+<p>
+As you go through the course,
+add other names to .gitignore as needed.
+In general there are 2 types of files that should be omitted:
+files that are generated by tools
+and files that contain configuration specific to the computer
+that the repository is cloned into.
+Be careful to omit these files in this course.
+</p>
+
+<p>
+Now you can add and commit the canvas folder to your local repository
+and then push to the remote repository.
+</p>
+
+<pre>
+cd ~/441
+git add dart/canvas
+git commit -m "canvas assignment"
+git push
+</pre> 
+
+<h2>Additional Study</h2>
+
+<p>
+Read <a href="http://pub.dartlang.org/doc/glossary.html#lockfile">the pubspec.lock file</a>.
+</p>
+
+<h2>Quiz Questions</h2>
+
+<p>
+Be prepared to answer the following questions in a quiz.
+</p>
+
+<ul>
+<li>What is the purpose of the pubspec.yaml file in Dart?</li>
+<li>What is the purpose of the pubspec.lock file in Dart?</li>
+<li>What does "pub" mean relative to Dart?</li>
+<li>Should pubspec.yaml be under version control?</li>
+<li>Should the contents of the packages folder be under version control?</li>
+<li>What does "yaml" stand for?</li>
+<li>Which type of Dart application relies on HTML?</li>
+<li>What function should exist inside main.dart when this file
+    is referenced in an HTML document as follows: <br>
+    <code>&lt;script type="application/dart" src="index.dart">&lt;/script></code>
+</li>
+<li>Which execution environments support OpenGL ES 2.0?</li>
+<li>What is WebGL?</li>
+<li>In Dart, are libraries inside packages or are packages inside libraries?</li>
+</ul>
+
+

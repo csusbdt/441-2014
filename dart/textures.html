@@ -1,0 +1,210 @@
+---
+layout: default
+---
+
+<h1>Textures</h1>
+
+<h2>Learning Objectives</h2>
+
+<ul>
+<li></li>
+</ul>
+
+<h2>Reading</h2>
+
+<ul>
+<li><a href="http://www.opengl.org/sdk/docs/tutorials/ClockworkCoders/uniform.php">Uniform Variables</a></li>
+<li><a href="http://pixlr.com/editor/">Free Image Editor</a> (Runs in the browser.)</li>
+</ul>
+
+<h2>Instructions</h2>
+
+<p>
+Create a dart project named <em>textures</em> by making a copy of the <em>clip-space</em> folder.
+After this copy operation, the contents of <em>~/441/dart</em> will be the following.
+</p>
+
+<ul>
+<li>canvas</li>
+<li>clip-space</li>
+<li>textures</li>
+</ul>
+
+<p>
+Open the new folder in the dart editor by selecting <em>File ... Open Existing Folder</em>.
+Verify that the copied application runs in Dartium.
+</p>
+
+<p>
+In the render loop, data is passed from the the program to the 
+vertex and fragment shaders through uniform variables
+whose values remain fixed for an invocation of a draw command.
+</p>
+
+<p>
+Also in the render loop, data is passed from the vertex shader
+to the fragment shader through varying variables.
+</p>
+
+<p>
+In this assignment, you will texture the rectangle you created
+in the clip space assignment with an image loaded
+through the web page.
+</p>
+
+<h2>Load Image Data</h2>
+
+<p>
+Retrieving and loading an image file is slow compared to the speed
+at which operations run in the CPU and GPU.
+The image is either loaded from the local file system or retrieved
+over the Internet.
+In Dart, as in Javascript, we are forced to do this image loading asynchronously.
+This means we start the image loading process and register a callback function
+to run when the image data is available.
+The strategy we will follow is to rename our existing init function to init2
+and define a new init function as follows.
+</p>
+
+<p>
+Add a png image of your choice to the web folder.
+Name the image <em>image.png</em>.
+The height and width of the image must be a power of 2.
+Make a note of whether the image uses RGB or RGBA and modify the code given below accordingly.
+</p>
+
+<p>
+We will put all the code needed in <em>scene.dart</em>.
+Add the following variable definition to the scene library.
+Variables declared this way are automatically initialized to <code>null</code>.
+Also, the leading underscore in the variable name gives the variable library scope.
+</p>
+
+<p>
+Create <em>scene.dart</em> with the following contents.
+</p>
+
+<pre>
+library scene;
+
+import 'dart:web_gl';
+import 'dart:typed_data';
+import 'dart:html' show ImageElement;
+
+RenderingContext gl;
+ImageElement img;
+
+init(RenderingContext renderingContext) {
+  gl = renderingContext;  
+  img = new ImageElement();
+  img.src = 'image.png';
+  img.onLoad.listen((_) => init2());
+}
+
+init2() {
+  Shader vertexShader = gl.createShader(VERTEX_SHADER);
+  gl.shaderSource(vertexShader, """
+    precision highp float;
+    attribute vec3 a_pos;
+    attribute vec2 a_uv;
+    varying vec2 v_uv;
+    void main() {
+      v_uv = a_uv;
+      gl_Position = vec4(a_pos.x - 0.5, a_pos.y - 0.5, 0.0, 2.0);
+    }
+  """);
+  gl.compileShader(vertexShader);
+  if (!gl.getShaderParameter(vertexShader, COMPILE_STATUS)) {
+    throw gl.getShaderInfoLog(vertexShader);
+  }  
+
+  Shader fragmentShader = gl.createShader(FRAGMENT_SHADER);  
+  gl.shaderSource(fragmentShader, """
+    precision highp float;
+    varying vec2 v_uv;
+    uniform sampler2D u_tex;
+    void main() {
+      vec4 col = texture2D(u_tex, v_uv);
+      if (col.a > 0.0) {
+        gl_FragColor = col;
+      } else {
+        discard;
+      }
+    }
+  """);
+  gl.compileShader(fragmentShader);
+  if (!gl.getShaderParameter(fragmentShader, COMPILE_STATUS)) {
+    throw gl.getShaderInfoLog(fragmentShader);
+  }
+
+  Program program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, LINK_STATUS)) {
+    throw gl.getProgramInfoLog(program);
+  }
+
+  gl.useProgram(program);
+  
+  int posLocation = gl.getAttribLocation(program, 'a_pos');  
+  int uvLocation = gl.getAttribLocation(program, 'a_uv');  
+
+  Buffer vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
+  Float32List vertexArray = new Float32List.fromList([
+     0.0,  0.0,  0.0,
+     1.0,  0.0,  0.0,
+     0.0,  1.0,  0.0,
+     1.0,  1.0,  0.0
+  ]);
+  gl.bufferDataTyped(ARRAY_BUFFER, vertexArray, STATIC_DRAW);
+  gl.enableVertexAttribArray(posLocation);
+  gl.vertexAttribPointer(posLocation, 3, FLOAT, false, 0, 0);
+
+  Buffer uvBuffer = gl.createBuffer();
+  gl.bindBuffer(ARRAY_BUFFER, uvBuffer);
+  Float32List uvArray = new Float32List.fromList([
+     0.0,  1.0,
+     1.0,  1.0,
+     0.0,  0.0,
+     1.0,  0.0
+  ]);
+  gl.bufferDataTyped(ARRAY_BUFFER, uvArray, STATIC_DRAW);
+  gl.enableVertexAttribArray(uvLocation);
+  gl.vertexAttribPointer(uvLocation, 2, FLOAT, false, 0, 0);
+
+  UniformLocation texUniformLocation = gl.getUniformLocation(program, "u_tex");
+  gl.uniform1i(texUniformLocation, 0);
+  
+  gl.activeTexture(TEXTURE0);
+
+  Texture texture = gl.createTexture();
+  gl.bindTexture(TEXTURE_2D, texture);
+  gl.texImage2DImage(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, img);
+  img = null; // Garbage collect.
+  gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
+  gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
+  
+  gl.enable(CULL_FACE);
+  gl.cullFace(BACK);
+  gl.frontFace(CCW);
+  
+  gl.clearColor(0, 0, 0, 1);
+  gl.clear(COLOR_BUFFER_BIT);
+  gl.drawArrays(TRIANGLE_STRIP, 0, 4);
+}
+</pre>
+
+<p>
+Test that the program displays your image.
+</p>
+
+<p>
+Be prepared to answer the following quiz questions.
+</p>
+
+<ul>
+<li>TBA</li>
+</ul>
+

@@ -1,0 +1,2 @@
+#safe: false  # to distinguish from Github Pages, do not disable plugins
+exclude: [ README.md ]
