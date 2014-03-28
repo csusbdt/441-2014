@@ -7,7 +7,7 @@
     ['lua',             20, new Date('2014-04-13T23:59:59'), '<a href="lua.html">Lua</a>'],
     ['sdl',             20, new Date('2014-04-20T23:59:59'), '<a href="sdl.html">SDL</a>'],
     ['embed',           20, new Date('2014-04-27T23:59:59'), '<a href="embed.html">Embed</a>'],
-    ['tba2',            20, new Date('2014-05-04T23:59:59'), '<a href="">TBA</a>'],
+    ['bp',              20, new Date('2014-05-04T23:59:59'), '<a href="bp.html">Boilerplate</a>'],
     ['tba3',            20, new Date('2014-05-11T23:59:59'), '<a href="">TBA</a>'],
     ['tba4',            20, new Date('2014-05-18T23:59:59'), '<a href="">TBA</a>'],
     ['tba5',            20, new Date('2014-05-25T23:59:59'), '<a href="">TBA</a>'],
