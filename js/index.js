@@ -36,53 +36,8 @@
       td.innerHTML = schedule[i][1];
       td.className = 'points';
       tr.appendChild(td);
-      td = document.createElement('td'); // score column
-      td.innerHTML = '';
-      td.className = 'score';
-      tr.appendChild(td);
       tbody.appendChild(tr);
     }
-  };
-
-  app.setStudentId = function(id) {
-    localStorage.setItem('studentId', id);
-    document.getElementById('score-column').innerHTML = id;
-    // Insert scores in table.
-    var rows = document.getElementsByTagName('tbody')[0].children;
-    for (var i = 0; i < rows.length; ++i) {
-      if (app.scores[id][i] !== null) {
-        rows[i].lastChild.innerHTML = app.scores[id][i];
-      } else {
-        rows[i].lastChild.innerHTML = '';
-      }
-    }
-  }
-
-  app.onloadScores = function() {
-    app.computeAverage();
-    var id = localStorage.getItem('studentId');
-    if (id === null) id = 'Avg';
-    app.setStudentId(id);
-  };
-
-  app.computeAverage = function() {
-    var students = Object.keys(app.scores);
-    var avgs = [];
-    for (var j = 0; j < app.scores[students[0]].length; ++j) {
-      var total = 0;
-      var n = 0;
-      for (var i = 0; i < students.length; ++i) {
-        var id = students[i];
-        var score = app.scores[id][j];
-        if (score !== null) {
-          total += score;
-          ++n;
-        }
-      }
-      if (n > 0) avgs.push(Math.round(total/n));
-      else avgs.push(null);
-    }  
-    app.scores.Avg = avgs;
   };
 
 })();
