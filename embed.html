@@ -58,12 +58,12 @@ Add this to main.cpp.
 
 <pre>
 lua_State * lua = luaL_newstate();
-if (lua == nullptr) {
+if (lua == NULL) {
     SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR,
         "Hello Program",
         "Failed to create Lua state.",
-        nullptr);
+        NULL);
     return 1;
 }
 </pre>
@@ -164,14 +164,14 @@ int msgbox(lua_State * L) {
         return luaL_error(L, "msgbox requires 1 argument.");
     }
     const char * msg = luaL_checkstring(L, 1);
-    if (msg == nullptr) {
+    if (msg == NULL) {
         return luaL_error(L, "Argument to msgbox not a string.");
     }
     SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_INFORMATION, 
         "CSE 441", 
         msg, 
-        nullptr);
+        NULL);
     return 0;
 }
 </pre>

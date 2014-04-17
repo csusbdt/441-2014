@@ -17,7 +17,6 @@
 
   app.onload = function() {
     app.buildTable();
-    app.loadScript('scores.js?x=' + Math.random());
   };
 
   app.buildTable = function() {
