@@ -11,5 +11,9 @@
 
 #include "SDL.h"
 
+#define APP_TITLE "Sample SDL Lua Project"
+
+void fatal(const char * msg);
+
 #endif
 
