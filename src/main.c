@@ -1,5 +1,7 @@
 #include "global.h"
 
+bool process_event_queue(lua_State * L);
+
 int main(int argc, char * argv[]) {
 	lua_State * L = luaL_newstate();
 	if (L == NULL) {
@@ -13,7 +15,10 @@ int main(int argc, char * argv[]) {
 
 	}
 
-	
+	while (process_event_queue(L)) {
+		// do ai
+		// render
+	}
 
 	puts("i live.");
 }
