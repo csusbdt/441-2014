@@ -1,11 +1,14 @@
 #include "global.h"
 
+#define SDL_INIT_FLAGS (SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)
+
 bool process_event_queue(lua_State * L);
 
 static lua_State  * L;
 static SDL_Window * window;
 
 void quit();
+void register_util_functions(lua_State * L);
 
 void init() {
 	L = luaL_newstate();
@@ -15,7 +18,7 @@ void init() {
 
 	luaL_openlibs(L);
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+	if (SDL_Init(SDL_INIT_FLAGS) != 0) {
 		fatal(SDL_GetError());
 	}
 
@@ -35,14 +38,30 @@ void init() {
 
 	}
 
+	SDL_Renderer * renderer = SDL_CreateRenderer(
+		window,
+		-1,
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (!renderer) fatal(SDL_GetError());
+    
+	if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT))
+		fatal(SDL_GetError());
+
+	register_util_functions(L);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_Rect rect = { 0, 0, APP_WIDTH, APP_HEIGHT };
+	SDL_RenderFillRect(renderer, &rect);
+	SDL_RenderPresent(renderer);
+}
+
+void loop() {
 	while (process_event_queue(L)) {
 		// do ai
 		// render
 	}
-}
-
-void loop() {
-
 }
 
 void quit() {
@@ -55,5 +74,6 @@ int main(int argc, char * argv[]) {
 	init(); 
 	loop();
 	quit();
+    return 0;
 }
 

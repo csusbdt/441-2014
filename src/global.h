@@ -15,6 +15,7 @@
 #define APP_WIDTH  640
 #define APP_HEIGHT 480
 
+void error(const char * msg);
 void fatal(const char * msg);
 
 #endif
