@@ -1,7 +1,7 @@
 #include "global.h"
 
 static int quit(lua_State * L) {
-//	quit_loop();
+//	app_quit();
 	return 0;
 }
 
