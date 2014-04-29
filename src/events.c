@@ -34,7 +34,6 @@ bool process_event_queue(lua_State * L) {
 	while (SDL_PollEvent(&e)) {
 		if      (e.type == SDL_QUIT)          { on_window_closing(L);  return false; } 
 		else if (e.type == SDL_MOUSEBUTTONDOWN) on_mouse_down(L, &e.button);
-		//else if (e.type == SDL_FINGERDOWN)      on_finger_down(L, &e.tfinger);
 	}
 	return true;
 }
