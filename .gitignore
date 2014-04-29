@@ -1,6 +1,7 @@
 _site
 /git/osx/osx.xcodeproj/project.xcworkspace
 /git/osx/osx.xcodeproj/xcuserdata
+*.xcuserstate
 a.out
 main.exe
 *.obj

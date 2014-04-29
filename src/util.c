@@ -1,7 +1,9 @@
 #include "global.h"
 
+extern bool running;
+
 static int quit(lua_State * L) {
-//	app_quit();
+	running = false;
 	return 0;
 }
 

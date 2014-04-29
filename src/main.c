@@ -6,11 +6,17 @@ bool process_event_queue(lua_State * L);
 
 static lua_State  * L;
 static SDL_Window * window;
+bool running = true;
 
-void quit();
 void register_util_functions(lua_State * L);
 
-void init() {
+static void quit() {
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+	lua_close(L);
+}
+
+static void init() {
 	L = luaL_newstate();
 	if (L == NULL) {
 		fatal("Can not create Lua state.");
@@ -51,29 +57,24 @@ void init() {
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_Rect rect = { 0, 0, APP_WIDTH, APP_HEIGHT };
-	SDL_RenderFillRect(renderer, &rect);
+	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	//SDL_Rect rect = { 0, 0, APP_WIDTH, APP_HEIGHT };
+	//SDL_RenderFillRect(renderer, &rect);
 	SDL_RenderPresent(renderer);
 }
 
 void loop() {
-	while (process_event_queue(L)) {
+	while (running) {
+		if (!process_event_queue(L)) break;
 		// do ai
 		// render
 	}
-}
-
-void quit() {
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-	lua_close(L);
 }
 
 int main(int argc, char * argv[]) {
 	init(); 
 	loop();
 	quit();
-    return 0;
+	return 0;
 }
 
