@@ -51,14 +51,13 @@ static void init() {
 		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!renderer) fatal(SDL_GetError());
     
-	if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT))
-		fatal(SDL_GetError());
+	//if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT))
+	//	fatal(SDL_GetError());
 
 	register_util_functions(L);
 }
 
 static void draw() {
-	assert(lua_gettop(L) == 0);
 	lua_getglobal(L, "on_draw");
         if (lua_isnil(L, -1)) {
 		lua_pop(L, 1);
@@ -71,18 +70,17 @@ void loop() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	//SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	//SDL_Rect rect = { 0, 0, APP_WIDTH, APP_HEIGHT };
-	//SDL_RenderFillRect(renderer, &rect);
-		assert(lua_gettop(L) == 0);
-
 	while (running) {
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
-		assert(lua_gettop(L) == 0);
+
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_Rect rect = { 10, 10, APP_WIDTH - 20, APP_HEIGHT - 20 };
+		SDL_RenderFillRect(renderer, &rect);
+
 		if (!process_event_queue(L)) break;
-		assert(lua_gettop(L) == 0);
+
 		draw();
 	}
 }

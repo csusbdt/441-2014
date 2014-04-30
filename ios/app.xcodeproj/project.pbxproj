@@ -11,9 +11,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		31266128191053A2002B296A /* libSDL2-ipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31266127191053A2002B296A /* libSDL2-ipad.a */; };
 		31528096190F3BB700A717F7 /* SDL_config.h.cmake in Resources */ = {isa = PBXBuildFile; fileRef = 3152805A190F3BB700A717F7 /* SDL_config.h.cmake */; };
 		31528097190F3BB700A717F7 /* SDL_config.h.in in Resources */ = {isa = PBXBuildFile; fileRef = 3152805B190F3BB700A717F7 /* SDL_config.h.in */; };
-		31528099190F3E5900A717F7 /* libSDL2-iphone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31528098190F3E5900A717F7 /* libSDL2-iphone.a */; };
 		315280D3190F3F4100A717F7 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 3152809B190F3F4100A717F7 /* lapi.c */; };
 		315280D4190F3F4100A717F7 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 3152809D190F3F4100A717F7 /* lauxlib.c */; };
 		315280D5190F3F4100A717F7 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = 3152809F190F3F4100A717F7 /* lbaselib.c */; };
@@ -64,6 +64,7 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		31266127191053A2002B296A /* libSDL2-ipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libSDL2-ipad.a"; path = "lib/libSDL2-ipad.a"; sourceTree = SOURCE_ROOT; };
 		31528047190F3BB700A717F7 /* begin_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = begin_code.h; path = include/begin_code.h; sourceTree = SOURCE_ROOT; };
 		31528048190F3BB700A717F7 /* close_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = close_code.h; path = include/close_code.h; sourceTree = SOURCE_ROOT; };
 		3152804A190F3BB700A717F7 /* SDL_assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_assert.h; path = include/SDL_assert.h; sourceTree = SOURCE_ROOT; };
@@ -141,7 +142,6 @@
 		31528092190F3BB700A717F7 /* SDL_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_version.h; path = include/SDL_version.h; sourceTree = SOURCE_ROOT; };
 		31528093190F3BB700A717F7 /* SDL_video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_video.h; path = include/SDL_video.h; sourceTree = SOURCE_ROOT; };
 		31528094190F3BB700A717F7 /* SDL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL.h; path = include/SDL.h; sourceTree = SOURCE_ROOT; };
-		31528098190F3E5900A717F7 /* libSDL2-iphone.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libSDL2-iphone.a"; path = "lib/libSDL2-iphone.a"; sourceTree = SOURCE_ROOT; };
 		3152809B190F3F4100A717F7 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lapi.c; path = ../lua/lapi.c; sourceTree = "<group>"; };
 		3152809C190F3F4100A717F7 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lapi.h; path = ../lua/lapi.h; sourceTree = "<group>"; };
 		3152809D190F3F4100A717F7 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lauxlib.c; path = ../lua/lauxlib.c; sourceTree = "<group>"; };
@@ -220,8 +220,8 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
-				31528099190F3E5900A717F7 /* libSDL2-iphone.a in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
+				31266128191053A2002B296A /* libSDL2-ipad.a in Frameworks */,
 				FD779EDE0E26BA1200F39101 /* CoreAudio.framework in Frameworks */,
 				FD77A0850E26BDB800F39101 /* AudioToolbox.framework in Frameworks */,
 				FDB8BFC60E5A0F6A00980157 /* CoreGraphics.framework in Frameworks */,
@@ -327,7 +327,7 @@
 		0097E2D412F70C4D00724AC5 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				31528098190F3E5900A717F7 /* libSDL2-iphone.a */,
+				31266127191053A2002B296A /* libSDL2-ipad.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";

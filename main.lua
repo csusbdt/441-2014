@@ -6,7 +6,7 @@ function yon_draw()
 end
 
 function on_touch(x, y) 
-	quit()
+	msgbox("x = " .. x .. "   y = " .. y)
 end
 
 
