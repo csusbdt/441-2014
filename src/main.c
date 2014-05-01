@@ -59,11 +59,15 @@ static void init() {
 
 static void draw() {
 	lua_getglobal(L, "on_draw");
+	assert(lua_gettop(L) == 1);
         if (lua_isnil(L, -1)) {
 		lua_pop(L, 1);
+		assert(lua_gettop(L) == 0);
 		return;
 	}
-        if (lua_pcall(L, 0, 0, 0)) error(lua_tostring(L, -1));	
+        if (lua_pcall(L, 0, 0, 0)) {
+		fatal(lua_tostring(L, -1));
+	}
 }
 
 void loop() {
