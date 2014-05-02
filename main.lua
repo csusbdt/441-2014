@@ -1,12 +1,12 @@
---local Button = require('app.Button')
---local quit_btn = Button.create_from_texture('assets/textures/mybutton.bmp', 100, 60)
+local Button = require('app.Button')
+local btn = Button.create_from_texture('textures/ima.bmp', 100, 60)
 
 function on_draw()
-	--quit_btn:draw()
+	btn:draw()
 end
 
 function on_touch(x, y) 
-	msgbox("x = " .. x .. "   y = " .. y)
+	if btn:contains(x, y) then quit() end
 end
 
 
