@@ -1,0 +1,76 @@
+---
+layout: default
+id: tic
+title: Tic Tac Toe Assignment
+---
+
+<h1>Tic Tac Toe</h1>
+
+<h2>Overview</h2>
+
+<p>
+Implement the game of Tic Tac Toe using SDL and Lua.
+Have the user play against the computer.
+Let the user go first but make sure the computer never loses.
+</p>
+
+<p>
+The C-side of the program should provide a basic line drawing command.
+The Lua-side of the program should use this line draw function
+to draw the grid and the X's and O's.
+Draw X's with 2 line draw commands and draw O's as boxes with 4 line draw commands.
+</p>
+
+<p>
+Define Lua modules for the purpose of drawing X's and O's.
+For example, define the X module in file X.lua.
+This module should contain a single function that creates drawable X's.
+Code that uses the X module should look something like the following.
+</p>
+
+<pre>
+local X = require('app.X')
+
+...
+
+local x1 = X.create(30, 100) -- create an X at pixel position (30, 100)
+
+...
+
+function on_draw()
+    x1:draw()
+end
+</pre>
+
+<p>
+Look at the
+<a href="https://github.com/csusbdt/441-2014">the example code presented in class</a> 
+as a foundation for your entire solution to the problem.
+Look at the Button module in particular
+to get an idea about how to design the X and O modules.
+</p>
+
+<h2>Project Organization</h2>
+
+<p>
+Create a folder <em>~/441/tic</em> in your repository 
+to hold your solution for this assignment.
+Organize the contents of the tic folder as follows.
+</p>
+
+<pre>
+src/      -- C/C++ source code
+app/      -- Lua modules
+main.lua  -- Lua module called during initialization
+</pre>
+
+<p>
+You don't need to include any build files in your repository,
+such as makefiles, Visual Studio project files or Xcode project files.
+However, you can include these if you want to.
+</p>
+
+<p>
+Note that the program does not need to load any images or sound files.
+</p>
+
