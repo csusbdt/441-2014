@@ -1,4 +1,4 @@
-local Texture = require('app.Texture')
+local textures = require('app.textures')
 
 local mt = {}
 
@@ -13,7 +13,7 @@ function mt.contains(self, x, y)
 end
 
 local function create_from_file(filename, x, y, w, h)
-	local t = Texture.load(filename)
+	local t = textures.get(filename)
 	local o = { t = t, x = x or 0, y = y or 0, w = w or t.w, h = h or t.h }
 	setmetatable(o, mt)
 	return o
