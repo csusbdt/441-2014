@@ -1,6 +1,7 @@
 #include "global.h"
 
 #define SDL_INIT_FLAGS (SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)
+#define DESIRED_MILLIS_PER_FRAME (1000 / 60)
 
 bool process_event_queue(lua_State * L);
 
@@ -78,11 +79,18 @@ void loop() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	while (running) {
+		Uint32 start_time = SDL_GetTicks();
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 		if (!process_event_queue(L)) break;
 		draw();
+		Uint32 elapsed_time = SDL_GetTicks() - start_time;
+		if (elapsed_time < DESIRED_MILLIS_PER_FRAME) {
+			SDL_Delay(DESIRED_MILLIS_PER_FRAME - elapsed_time);
+		} else {
+			SDL_Delay(1);
+		}
 	}
 }
 
