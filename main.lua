@@ -1,5 +1,5 @@
 local Button = require('app.Button')
-local btn = Button.create_from_texture('textures/ima.bmp', 100, 60)
+local btn = Button.create_from_file('textures/ima.bmp', 100, 60)
 
 function on_draw()
 	btn:draw()

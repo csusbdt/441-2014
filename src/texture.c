@@ -29,6 +29,7 @@ static int texture_from_file(lua_State * L) {
 }
 
 static int destroy_texture(lua_State * L) {
+puts("destroy_texture\n");
 	SDL_Texture * texture = (SDL_Texture *) lua_touserdata(L, 1);
 	if (texture == NULL) {
 		fatal("destroy_texture called with bad argument");
@@ -45,7 +46,7 @@ static int render_texture(lua_State * L) {
 	SDL_Texture * texture = *ud;
 	SDL_Rect src;
 	SDL_Rect dst;
-	if (lua_gettop(L) == 3) {
+	if (lua_gettop(L) == 5) {
 	        dst.x = luaL_checknumber(L, 2);
 	        dst.y = luaL_checknumber(L, 3);
 		SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
