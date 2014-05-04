@@ -27,16 +27,26 @@ static int audio_sources = 0;
 static PlayInstance play_instances[MAX_AUDIO_SOURCES];
 static LoopInstance loop_instances[MAX_AUDIO_SOURCES];
 
-static int get_empty_play_instance() {
+static int fill_empty_play_instance(Wave * wave) {
 	for (int i = 0; i < MAX_AUDIO_SOURCES; ++i) {
-		if (play_instances[i].wave == NULL) return i;
+		if (play_instances[i].wave == NULL) {
+			play_instances[i].wave = wave;
+			play_instances[i].next_sample = 0;
+			++audio_sources;
+			return i;
+		}
 	}
 	return NO_INDEX;
 }
 
-static int get_empty_loop_instance() {
+static int fill_empty_loop_instance(Wave * wave) {
 	for (int i = 0; i < MAX_AUDIO_SOURCES; ++i) {
-		if (loop_instances[i].wave == NULL) return i;
+		if (loop_instances[i].wave == NULL) {
+			loop_instances[i].wave = wave;
+			loop_instances[i].next_sample = 0;
+			++audio_sources;
+			return i;
+		}
 	}
 	return NO_INDEX;
 }
@@ -50,14 +60,16 @@ static void unlock_audio() {
 }
 
 static void reset_play_instance(int i) {
-	play_instances[i].wave        = NULL;
+	assert(play_instances[i].wave != NULL);
+	play_instances[i].wave = NULL;
 	play_instances[i].next_sample = 0;
 	assert(audio_sources > 0);
 	--audio_sources;
 }
 
 static void reset_loop_instance(int i) {
-	loop_instances[i].wave        = NULL;
+	assert(loop_instances[i].wave != NULL);
+	loop_instances[i].wave = NULL;
 	loop_instances[i].next_sample = 0;
 	assert(audio_sources > 0);
 	--audio_sources;
@@ -139,16 +151,11 @@ static int play_wave(lua_State * L) {
 		fatal("play_wave called with bad argument");
 	}
 	Wave * wave = *ud;
-	int i = get_empty_play_instance();
-	if (i == NO_INDEX) return 0;
-	lock_audio();
-	if (audio_sources >= MAX_AUDIO_SOURCES) {
-		unlock_audio();
-		return 0;
+	if (wave == NULL) {
+		fatal("play_wave called with bad argument 2");
 	}
-	++audio_sources;
-	play_instances[i].wave        = wave;
-	play_instances[i].next_sample = 0;
+	lock_audio();
+	int i = fill_empty_play_instance(wave);
 	unlock_audio();
 	return 0;
 }
@@ -159,16 +166,21 @@ static int loop_wave(lua_State * L) {
 		fatal("loop_wave called with bad argument");
 	}
 	Wave * wave = *ud;
-	int i = get_empty_loop_instance();
-	if (i == NO_INDEX) return 0;
-	lock_audio();
-	if (audio_sources >= MAX_AUDIO_SOURCES) {
-		unlock_audio();
-		return 0;
+	if (wave == NULL) {
+		fatal("loop_wave called with bad argument 2");
 	}
-	++audio_sources;
-	loop_instances[i].wave        = wave;
-	loop_instances[i].next_sample = 0;
+	lock_audio();
+	int i = fill_empty_loop_instance(wave);
+	unlock_audio();
+	if (i == NO_INDEX) return 0;
+	lua_pushinteger(L, i);
+	return 1;
+}
+
+static int stop_loop(lua_State * L) {
+	int i = luaL_checknumber(L, 1);
+	lock_audio();
+	reset_loop_instance(i);
 	unlock_audio();
 	return 0;
 }
@@ -220,5 +232,6 @@ void register_audio_functions(lua_State * L) {
 	lua_register(L, "destroy_wave"   , destroy_wave   );
 	lua_register(L, "play_wave"      , play_wave      );
 	lua_register(L, "loop_wave"      , loop_wave      );
+	lua_register(L, "stop_loop"      , stop_loop      );
 }
 

@@ -1,21 +1,39 @@
 local waves = {}
 setmetatable(waves, { __mode = 'v' })
 
-local mt = {}
+local loop_instance_mt = {}
 
-mt.__index = mt;
+loop_instance_mt.__index = loop_instance_mt
 
-function mt.__gc(self)
+function loop_instance_mt.stop(self)
+	if self.i and not self.stopped then
+		self.stopped = true
+		stop_loop(self.i)
+	end
+end
+
+function loop_instance_mt.__gc(self)
+	if self.i and not self.stopped then stop_loop(self.i) end
+end
+
+local wave_mt = {}
+
+wave_mt.__index = wave_mt;
+
+function wave_mt.__gc(self)
 	destroy_wave(self.w)
 	waves[self.filename] = nil
 end
 
-function mt.play(self)
+function wave_mt.play(self)
 	play_wave(self.w) 
 end
 
-function mt.loop(self)
-	return loop_wave(self.w) 
+function wave_mt.loop(self)
+	local loop_instance = { i = loop_wave(self.w) }
+print("loop_instace.i = " .. loop_instance.i)
+	setmetatable(loop_instance, loop_instance_mt)
+	return loop_instance
 end
 
 local function get(filename)
@@ -24,7 +42,7 @@ local function get(filename)
 	end
 	local o = { filename = filename }
 	o.w = wave_from_file(filename)
-	setmetatable(o, mt)
+	setmetatable(o, wave_mt)
 	waves[filename] = o
 	return o
 end
