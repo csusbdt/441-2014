@@ -1,21 +1,21 @@
-local textures = require('app.textures')
+local textures = require('eng.textures')
 
-local mt = {}
+local button_mt = {}
 
-mt.__index = mt;
+button_mt.__index = button_mt;
 
-function mt.draw(self)
+function button_mt.draw(self)
 	self.t:draw(self.x, self.y) 
 end
 
-function mt.contains(self, x, y)
+function button_mt.contains(self, x, y)
 	return x >= self.x and x <= self.x + self.w and y >= self.y and y <= self.y + self.h
 end
 
 local function create_from_file(filename, x, y, w, h)
 	local t = textures.get(filename)
 	local o = { t = t, x = x or 0, y = y or 0, w = w or t.w, h = h or t.h }
-	setmetatable(o, mt)
+	setmetatable(o, button_mt)
 	return o
 end
 

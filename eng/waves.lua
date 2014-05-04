@@ -5,14 +5,14 @@ local loop_instance_mt = {}
 
 loop_instance_mt.__index = loop_instance_mt
 
-function loop_instance_mt.stop(self)
+function loop_instance_mt:stop()
 	if self.i and not self.stopped then
 		self.stopped = true
 		stop_loop(self.i)
 	end
 end
 
-function loop_instance_mt.__gc(self)
+function loop_instance_mt:__gc()
 	if self.i and not self.stopped then stop_loop(self.i) end
 end
 
@@ -20,16 +20,16 @@ local wave_mt = {}
 
 wave_mt.__index = wave_mt;
 
-function wave_mt.__gc(self)
+function wave_mt:__gc()
 	destroy_wave(self.w)
 	waves[self.filename] = nil
 end
 
-function wave_mt.play(self)
+function wave_mt:play()
 	play_wave(self.w) 
 end
 
-function wave_mt.loop(self)
+function wave_mt:loop()
 	local loop_instance = { i = loop_wave(self.w) }
 print("loop_instace.i = " .. loop_instance.i)
 	setmetatable(loop_instance, loop_instance_mt)

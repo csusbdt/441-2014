@@ -6,8 +6,9 @@
 typedef Sint32 AudioSample;
 
 typedef struct {
-	int len;
-	AudioSample * buf;
+	AudioSample * buf;  // audio samples
+	int len;            // number of samples
+	int refs;           // reference count
 } Wave;
 
 typedef struct {
@@ -27,12 +28,21 @@ static int audio_sources = 0;
 static PlayInstance play_instances[MAX_AUDIO_SOURCES];
 static LoopInstance loop_instances[MAX_AUDIO_SOURCES];
 
+static void release_wave(Wave * wave) {
+	assert(wave->refs > 0);
+	if (--wave->refs == 0) {
+		SDL_free(wave->buf);
+		SDL_free(wave);
+	}
+}
+
 static int fill_empty_play_instance(Wave * wave) {
 	for (int i = 0; i < MAX_AUDIO_SOURCES; ++i) {
 		if (play_instances[i].wave == NULL) {
 			play_instances[i].wave = wave;
 			play_instances[i].next_sample = 0;
 			++audio_sources;
+			++wave->refs;
 			return i;
 		}
 	}
@@ -45,6 +55,7 @@ static int fill_empty_loop_instance(Wave * wave) {
 			loop_instances[i].wave = wave;
 			loop_instances[i].next_sample = 0;
 			++audio_sources;
+			++wave->refs;
 			return i;
 		}
 	}
@@ -61,6 +72,7 @@ static void unlock_audio() {
 
 static void reset_play_instance(int i) {
 	assert(play_instances[i].wave != NULL);
+	release_wave(play_instances[i].wave);
 	play_instances[i].wave = NULL;
 	play_instances[i].next_sample = 0;
 	assert(audio_sources > 0);
@@ -69,6 +81,7 @@ static void reset_play_instance(int i) {
 
 static void reset_loop_instance(int i) {
 	assert(loop_instances[i].wave != NULL);
+	release_wave(loop_instances[i].wave);
 	loop_instances[i].wave = NULL;
 	loop_instances[i].next_sample = 0;
 	assert(audio_sources > 0);
@@ -129,6 +142,7 @@ static int wave_from_file(lua_State * L) {
 	Wave * wave = (Wave *) SDL_malloc(sizeof(Wave));
 	wave->len = len;
 	wave->buf = buf;
+	wave->refs = 1;
 	Wave ** ud = (Wave **) lua_newuserdata(L, sizeof(Wave *));
 	*ud = wave;
 
@@ -136,12 +150,15 @@ static int wave_from_file(lua_State * L) {
 }
 
 static int destroy_wave(lua_State * L) {
-	Wave * wave = * (Wave **) lua_touserdata(L, 1);
-	if (wave == NULL) {
+	Wave ** ud = (Wave **) lua_touserdata(L, 1);
+	if (ud == NULL) {
 		fatal("destroy_wave called with bad argument");
 	}
-	SDL_free(wave->buf);
-	SDL_free(wave);
+	Wave * wave = *ud;
+	if (wave == NULL) {
+		fatal("destroy_wave called with bad argument 2");
+	}
+	release_wave(wave);
 	return 0;
 }
 

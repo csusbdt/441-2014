@@ -1,16 +1,16 @@
 local textures = {}
 setmetatable(textures, { __mode = 'v' })
 
-local mt = {}
+local texture_mt = {}
 
-mt.__index = mt;
+texture_mt.__index = texture_mt;
 
-function mt.__gc(self)
+function texture_mt:__gc()
 	destroy_texture(self.t)
 	textures[self.filename] = nil
 end
 
-function mt.draw(self, x, y, w, h)
+function texture_mt:draw(x, y, w, h)
 	render_texture(self.t, 0, 0, self.w, h or self.h, x or 0, y or 0, self.w, self.h) 
 end
 
@@ -20,7 +20,7 @@ local function get(filename)
 	end
 	local o = { filename = filename }
 	o.t, o.w, o.h = texture_from_file(filename)
-	setmetatable(o, mt)
+	setmetatable(o, texture_mt)
 	textures[filename] = o
 	return o
 end
