@@ -1,7 +1,5 @@
 #include "global.h"
 
-#define TEXTURE_MT_NAME "texture"
-
 extern SDL_Renderer * renderer;
 
 static int texture_from_file(lua_State * L) {
@@ -29,10 +27,13 @@ static int texture_from_file(lua_State * L) {
 }
 
 static int destroy_texture(lua_State * L) {
-puts("destroy_texture\n");
-	SDL_Texture * texture = (SDL_Texture *) lua_touserdata(L, 1);
-	if (texture == NULL) {
+	SDL_Texture ** ud = (SDL_Texture **) lua_touserdata(L, 1);
+	if (ud == NULL) {
 		fatal("destroy_texture called with bad argument");
+	}
+	SDL_Texture * texture = *ud;
+	if (texture == NULL) {
+		fatal("destroy_texture called with bad argument 2");
 	}
 	SDL_DestroyTexture(texture);
 	return 0;

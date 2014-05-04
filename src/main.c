@@ -13,6 +13,7 @@ static SDL_Window * window;
 
 void register_util_functions(lua_State * L);
 void register_texture_functions(lua_State * L);
+void register_audio_functions(lua_State * L);
 
 static void shutdown() {
 	SDL_DestroyRenderer(renderer);
@@ -55,6 +56,7 @@ static void init() {
 
 	register_util_functions(L);
 	register_texture_functions(L);
+	register_audio_functions(L);
 
 	if (luaL_dofile(L, "main.lua") != 0) {
 		fatal(luaL_checkstring(L, -1));
