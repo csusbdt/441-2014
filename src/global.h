@@ -9,6 +9,7 @@
 #include "lauxlib.h"
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 #define APP_TITLE  "Sample SDL Lua Project"
 #define APP_WIDTH  640

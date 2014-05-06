@@ -14,8 +14,10 @@ static SDL_Window * window;
 void register_util_functions(lua_State * L);
 void register_texture_functions(lua_State * L);
 void register_audio_functions(lua_State * L);
+void register_font_functions(lua_State * L);
 
 static void shutdown() {
+	TTF_Quit();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -54,13 +56,15 @@ static void init() {
 	//if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT))
 	//	fatal(SDL_GetError());
 
+	if (TTF_Init()) fatal(TTF_GetError());
+
 	register_util_functions(L);
 	register_texture_functions(L);
 	register_audio_functions(L);
+	register_font_functions(L);
 
 	if (luaL_dofile(L, "main.lua") != 0) {
 		fatal(luaL_checkstring(L, -1));
-
 	}
 }
 
