@@ -31,7 +31,6 @@ end
 
 function wave_mt:loop()
 	local loop_instance = { i = loop_wave(self.w) }
-print("loop_instace.i = " .. loop_instance.i)
 	setmetatable(loop_instance, loop_instance_mt)
 	return loop_instance
 end
