@@ -1,6 +1,6 @@
 local fontspecs = { 
-	dialog: { filename = 'fonts/DroidSansMono.ttf', size = 16 },
-	title: { filename = 'fonts/DroidSansMono.ttf', size = 20 },
+	dialog = { filename = 'fonts/DroidSansMono.ttf', size = 16 },
+	title  = { filename = 'fonts/DroidSansMono.ttf', size = 20 }
 }
 
 local fonts = {}
@@ -20,7 +20,7 @@ local function get(name)
 	for n, s in pairs(fontspecs) do
 		if n == name then
 			local o = { name = name }
-			o.ud = open_font(spec.filename, spec.size)
+			o.ud = open_font(s.filename, s.size)
 			setmetatable(o, font_mt)
 			fonts[name] = o
 			return o
