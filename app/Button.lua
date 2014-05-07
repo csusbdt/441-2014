@@ -1,4 +1,5 @@
-local textures = require('eng.textures')
+local textures    = require('eng.textures')
+local button_font = require('eng.fonts').get('button')
 
 local button_mt = {}
 
@@ -13,13 +14,21 @@ function button_mt.contains(self, x, y)
 end
 
 local function create_from_file(filename, x, y, w, h)
-	local t = textures.get(filename)
+	local t = textures.image(filename)
 	local o = { t = t, x = x or 0, y = y or 0, w = w or t.w, h = h or t.h }
 	setmetatable(o, button_mt)
 	return o
 end
 
+local function create_from_text(text, x, y, font)
+	local t = textures.text(text, font or button_font)
+	local o = { t = t, x = x or 0, y = y or 0, w = t.w, h = t.h }
+	setmetatable(o, button_mt)
+	return o
+end
+
 return {
-	create_from_file = create_from_file
+	create_from_file = create_from_file,
+	create_from_text = create_from_text
 }
 

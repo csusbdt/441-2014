@@ -19,6 +19,8 @@ typedef int bool;
 #define false 0
 #define true 1
 
+extern const SDL_Color APP_WHITE;
+
 void error(const char * msg);
 void fatal(const char * msg);
 
