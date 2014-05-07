@@ -17,21 +17,14 @@ void register_audio_functions(lua_State * L);
 void register_font_functions(lua_State * L);
 
 static void shutdown() {
+	lua_close(L);
 	TTF_Quit();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-	lua_close(L);
 }
 
 static void init() {
-	L = luaL_newstate();
-	if (L == NULL) {
-		fatal("Can not create Lua state.");
-	}
-
-	luaL_openlibs(L);
-
 	if (SDL_Init(SDL_INIT_FLAGS) != 0) {
 		fatal(SDL_GetError());
 	}
@@ -57,6 +50,13 @@ static void init() {
 	//	fatal(SDL_GetError());
 
 	if (TTF_Init()) fatal(TTF_GetError());
+
+	L = luaL_newstate();
+	if (L == NULL) {
+		fatal("Can not create Lua state.");
+	}
+
+	luaL_openlibs(L);
 
 	register_util_functions(L);
 	register_texture_functions(L);
