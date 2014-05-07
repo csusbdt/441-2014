@@ -1,6 +1,6 @@
 local Button = require('app.Button')
 local waves = require('eng.waves')
-local fonts = require('eng.fonts')
+--local fonts = require('eng.fonts')
 
 local b1 = Button.create_from_file('textures/ima.bmp', 100, 60)
 local b2 = Button.create_from_file('textures/ima.bmp', 100, 260)
@@ -21,5 +21,5 @@ function on_touch(x, y)
 	if b3:contains(x, y) then musicloop:stop() end
 end
 
-local dialog_font = fonts.get('dialog')
+--local dialog_font = fonts.get('dialog')
 
