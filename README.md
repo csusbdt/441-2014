@@ -1,8 +1,10 @@
+## Overview
+
 This program illustrates one way to use SDL2 and Lua to build a 2D video game.
 
-## Notes for Scriptors
+This README provides some explanation of the code.
 
-### Buttons
+## Buttons
 
 In this project, a button is a gui primitive that can be used for the following purposes.
 
@@ -43,7 +45,7 @@ draw()         | Draw the button at its x,y coordinate.
 contains(x, y) | Returns true if (x, y) are inside the button.
 
 
-### Textures
+## Textures
 
 There are 2 ways to create textures directly: load from an image file or create 
 from a font. You can also create textures indirectly by creating buttons. In either 
