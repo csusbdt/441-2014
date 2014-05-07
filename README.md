@@ -1,30 +1,68 @@
 This program illustrates one way to use SDL2 and Lua to build a 2D video game.
 
-## Notes for Engine Developers
-
-The code is written in C and Lua.
-
-All userdata is light, which means that metatables are not attached to any userdata on
-the C-side.  To guard against resource leaks, the Lua side always wraps a userdata object
-in a table with a metatable with a garbage collection function.  This garbage collection
-function is responsible to de-allocate resources.
-
-Wrapped userdata objects currently include textures and sound data (called waves).
-
-I placed Lua code that I feel belongs on the side of the engine developer under the
-folder named 'eng'.
-
-The program as it is written is prone to memory fragmentation.  A memory management
-strategy is needed to fix this.  Please discuss with me if you want to work on this.
-
 ## Notes for Scriptors
+
+### Buttons
+
+In this project, a button is a gui primitive that can be used for the following purposes.
+
+- Render an image
+- Render a single line of text
+- Define a clickable region
+
+Button instances are created from the following functions exported by the button module.
+
+                function                |     description
+--------------------------------------- | -----------------------------------------
+create_from_texture(t, x, y, w, h)      | create button from an existing texture
+create_from_image(filename, x, y, w, h) | create button from image
+create_from_text(text, x, y, font)      | create button from text using given font
+
+Examples:
+
+    Button   = require('app.Button')
+    stop_btn = Button.create_from_text("Stop", 100, 160)
+    tree_btn = Button.create_from_image("images/tree.bmp", 200, 50)
+
+
+A button instance is a table that contains the following keys:
+
+key | value
+--- | -----
+ t  | the texture to render 
+ x  | the x coordinate of the button
+ y  | the y coordinate of the button
+ w  | the width of the button
+ h  | the height of the button
+
+A metatable provides the following functions to buttons.
+
+   function    |    description
+-------------- | -----------------
+draw()         | Draw the button at its x,y coordinate.
+contains(x, y) | Returns true if (x, y) are inside the button.
+
 
 ### Textures
 
-To access a texture, use the get method of the textures module as follows.
+There are 2 ways to create textures directly: load from an image file or create 
+from a font. You can also create textures indirectly by creating buttons. In either 
+case, you need to first obtain a reference to the textures module as follows.
 
     textures = require('eng.textures')
-    ima = textures.get('textures/ima.bmp')
+
+To load an image, call the image function of the textures module as follows.
+
+    ima, w, h = textures.image('textures/ima.bmp')
+
+Textures obtained through the image function are cached in the textures module,
+so it is inexpensive to call the image function repeatedly for a given image file.
+
+To create an image from a font, you need to first get a font and then
+use this with the textures module to create the texture.
+
+    dialog_font = fonts.get('dialog')
+    text, w, h = textures.text('Hello', dialog_font)
 
 Render a texture by calling its draw method.
 
@@ -41,7 +79,37 @@ future, then force garbage collection as follows.
 
     collectgarbage()
 
-### Sound effects (and small music)
+## Fonts
+
+Fonts are loaded through the fonts module.  Obtain a reference to this module as follows.
+
+    fonts = require('eng.fonts')
+
+The fonts module exports a single function named 'get', which is used as follows to obtain
+references to loaded fonts.
+
+dialog_font = fonts.get('dialog')
+
+The fonts module contains an internal table named 'fontspecs', which contains the game's
+predefined fonts.  You should customize this table to define the fonts you need. The following
+is an example of the fontspecs table.
+
+    local fontspecs = {
+            dialog = { filename = 'fonts/DroidSansMono.ttf', size = 16 },
+            button = { filename = 'fonts/DroidSansMono.ttf', size = 22 },
+            title  = { filename = 'fonts/DroidSansMono.ttf', size = 28 }
+    }
+
+Font instances are used in the following functions.
+
+    textures.text(text, font)
+    Button.create_from_text(text, x, y, font)
+
+If font is omitted in a call to Button.create_from_text, then the "button" font is used.
+For this reason a button font should always be included in fontspecs.
+
+
+## Sound effects (and small music)
 
 Music data that is small can be treated like sound effects, which means the song can be completely
 loaded into RAM.  Large sized music will take up too much space, requiring a streaming
@@ -65,12 +133,25 @@ method is called.
     ...
     music:stop()
 
-### GUI
 
-The Button module is the beginning of a GUI library.  Button instances can be used to display
-textures.  They can also be used to function as buttons through the use of their contains
-functions.
+## Architecture Notes
 
+The code is written in C and Lua.
 
+All userdata is light, which means that metatables are not attached to any userdata on
+the C-side.  To guard against resource leaks, the Lua side always wraps a userdata object
+in a table with a metatable with a garbage collection function.  This garbage collection
+function is responsible to de-allocate resources.
 
+Wrapped userdata objects currently include textures, fonts and waves (sound data).
+
+I placed Lua code that I feel belongs on the side of the engine developer under the
+folder named 'eng'. I may change this name to 'res' because the modules in this folder
+manage resources.
+
+The program as it is written is prone to memory fragmentation.  A memory management
+strategy is needed to fix this.
+
+I ill also redo the way rendering works.  There is no need to repeatedly call draw if
+nothing changes.
 
