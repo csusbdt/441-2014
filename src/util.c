@@ -8,7 +8,9 @@ static int quit(lua_State * L) {
 }
 
 static int msgbox(lua_State * L) {
-	const char * msg = luaL_checkstring(L, 1);
+	const char * msg;
+	
+	msg = luaL_checkstring(L, 1);
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, APP_TITLE, msg, NULL); 
 	return 0;
 }

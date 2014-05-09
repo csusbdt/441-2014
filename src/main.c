@@ -28,7 +28,6 @@ static void init() {
 	if (SDL_Init(SDL_INIT_FLAGS) != 0) {
 		fatal(SDL_GetError());
 	}
-
 	window = SDL_CreateWindow(
 		APP_TITLE, 
 		SDL_WINDOWPOS_CENTERED,
@@ -76,22 +75,24 @@ static void draw() {
 		assert(lua_gettop(L) == 0);
 		return;
 	}
-        if (lua_pcall(L, 0, 0, 0)) {
+	if (lua_pcall(L, 0, 0, 0)) {
 		fatal(lua_tostring(L, -1));
 	}
 }
 
 void loop() {
+	Uint32 start_time;
+	Uint32 elapsed_time;
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	while (running) {
-		Uint32 start_time = SDL_GetTicks();
+		start_time = SDL_GetTicks();
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 		if (!process_event_queue(L)) break;
 		draw();
-		Uint32 elapsed_time = SDL_GetTicks() - start_time;
+		elapsed_time = SDL_GetTicks() - start_time;
 		if (elapsed_time < DESIRED_MILLIS_PER_FRAME) {
 			SDL_Delay(DESIRED_MILLIS_PER_FRAME - elapsed_time);
 		} else {

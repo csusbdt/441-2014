@@ -11,4 +11,6 @@ ipch
 *.sdf
 *.user
 *.suo
+a.exe.manifest
+a.exe
 
