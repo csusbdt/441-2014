@@ -105,6 +105,7 @@ static void init() {
 	If on_draw is found in global scope, then call it. Otherwise do nothing.
 */
 static void draw() {
+	assert(lua_gettop(L) == 0);
 	lua_getglobal(L, "on_draw");
 	assert(lua_gettop(L) == 1);
         if (lua_isnil(L, -1)) {
@@ -140,7 +141,9 @@ void loop() {
 
 		// Process all queued events;
 		// quit loop when event processor returns false.
+		assert(lua_gettop(L) == 0);
 		if (!process_event_queue(L)) break;
+		assert(lua_gettop(L) == 0);
 
 		// Let Lua scripts draw to the canvas.
 		draw();

@@ -1,3 +1,4 @@
+--[[
 local Button = require('app.Button')
 local waves = require('res.waves')
 local fonts = require('res.fonts')
@@ -22,4 +23,7 @@ function on_touch(x, y)
 	if b2:contains(x, y) then door:play() end
 	if b3:contains(x, y) then musicloop:stop() end
 end
+--]]
+
+require('title_screen').show()
 

@@ -20,6 +20,8 @@ typedef int bool;
 #define false 0
 #define true 1
 
+extern SDL_Renderer * renderer;
+
 extern const SDL_Color APP_WHITE;
 
 void error(const char * msg);
