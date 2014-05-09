@@ -44,6 +44,10 @@ A metatable provides the following functions to buttons.
 draw()         | Draw the button at its x,y coordinate.
 contains(x, y) | Returns true if (x, y) are inside the button.
 
+Examples:
+
+    stop_btn:draw()
+    if stop_btn:contains(x, y) then quit() end
 
 ## Textures
 
@@ -90,7 +94,7 @@ Fonts are loaded through the fonts module.  Obtain a reference to this module as
 The fonts module exports a single function named 'get', which is used as follows to obtain
 references to loaded fonts.
 
-dialog_font = fonts.get('dialog')
+    dialog_font = fonts.get('dialog')
 
 The fonts module contains an internal table named 'fontspecs', which contains the game's
 predefined fonts.  You should customize this table to define the fonts you need. The following

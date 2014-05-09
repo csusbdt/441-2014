@@ -1,5 +1,5 @@
-local textures    = require('eng.textures')
-local button_font = require('eng.fonts').get('button')
+local textures    = require('res.textures')
+local button_font = require('res.fonts').get('button')
 
 local button_mt = {}
 

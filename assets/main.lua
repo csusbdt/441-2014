@@ -1,6 +1,6 @@
 local Button = require('app.Button')
-local waves = require('eng.waves')
-local fonts = require('eng.fonts')
+local waves = require('res.waves')
+local fonts = require('res.fonts')
 
 local b1 = Button.create_from_text('Exit', 100, 60)
 local b2 = Button.create_from_text('Play door sound', 100, 260)
