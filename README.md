@@ -2,7 +2,25 @@
 
 This program illustrates one way to use SDL2 and Lua to build a 2D video game.
 
-This README provides some explanation of the code.
+The project contents include the following.
+
+    src/ - The app's C source code.
+
+    working/ - The working directory when testing the program. 
+               The Put files needed by the program here.
+
+    lua/ - The Lua source code.
+
+    osx/ - Build scripts to generate package installer for Mac OS X distribution.
+
+    ios/ - Xcode project to generate installer for iOS distribution.
+
+    win/ - Files needed to build on Windows.
+           Also will include a script to build a Windows installer.
+
+    android/ - Will contain scripts to build and test for Android.
+               Also will include script to build Android installation file.
+
 
 ## Buttons
 

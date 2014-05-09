@@ -13,4 +13,6 @@ ipch
 *.suo
 a.exe.manifest
 a.exe
+/osx/build
+/osx/cse441.pkg
 

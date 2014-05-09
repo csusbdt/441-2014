@@ -2,6 +2,7 @@
 
 #define SDL_INIT_FLAGS (SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)
 #define DESIRED_MILLIS_PER_FRAME (1000 / 60)
+#define RENDERER_INIT_FLAGS (SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)
 
 bool process_event_queue(lua_State * L);
 
@@ -16,6 +17,30 @@ void register_texture_functions(lua_State * L);
 void register_audio_functions(lua_State * L);
 void register_font_functions(lua_State * L);
 
+static void register_global_functions(lua_State * L) {
+	register_util_functions(L);
+	register_texture_functions(L);
+	register_audio_functions(L);
+	register_font_functions(L);
+}
+
+static void set_require_path(lua_State * L, const char * path) {
+	assert(lua_gettop(L) == 0);
+	lua_getglobal(L, "package");
+	lua_pushstring(L, "path");
+	lua_pushstring(L, path);
+	lua_settable(L, 1);
+	lua_settop(L, 0);
+}
+
+static void clear_canvas() {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+}
+
+/*
+	Shutdown systems in the reverse order in which they were started.
+*/
 static void shutdown() {
 	lua_close(L);
 	TTF_Quit();
@@ -24,10 +49,20 @@ static void shutdown() {
 	SDL_Quit();
 }
 
+/*
+	Initialize SDL, SDL_ttf and Lua.
+	Register the app's C functions with Lua.
+	Call the app's init script.
+
+	The main purpose of the init script is to define the following
+	global functions:
+		on_draw
+		on_touch
+		on_quit
+*/
 static void init() {
-	if (SDL_Init(SDL_INIT_FLAGS) != 0) {
-		fatal(SDL_GetError());
-	}
+	if (SDL_Init(SDL_INIT_FLAGS)) fatal(SDL_GetError());
+
 	window = SDL_CreateWindow(
 		APP_TITLE, 
 		SDL_WINDOWPOS_CENTERED,
@@ -35,38 +70,40 @@ static void init() {
 		APP_WIDTH,
 		APP_HEIGHT,
 		0);
-	if (!window) {
-		fatal(SDL_GetError());
-	}
+	if (!window) fatal(SDL_GetError());
 
-	renderer = SDL_CreateRenderer(
-		window,
-		-1,
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, RENDERER_INIT_FLAGS);
 	if (!renderer) fatal(SDL_GetError());
     
 	//if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT))
 	//	fatal(SDL_GetError());
 
+	clear_canvas();
+
 	if (TTF_Init()) fatal(TTF_GetError());
 
 	L = luaL_newstate();
-	if (L == NULL) {
-		fatal("Can not create Lua state.");
-	}
+	if (!L) fatal("Can not create Lua state.");
 
 	luaL_openlibs(L);
 
-	register_util_functions(L);
-	register_texture_functions(L);
-	register_audio_functions(L);
-	register_font_functions(L);
+	set_require_path(L, "scripts/?.lua");
 
-	if (luaL_dofile(L, "main.lua") != 0) {
-		fatal(luaL_checkstring(L, -1));
-	}
+	assert(lua_gettop(L) == 0);
+	register_global_functions(L);
+	assert(lua_gettop(L) == 0);
+
+	if (luaL_dofile(L, "scripts/init.lua")) fatal(luaL_checkstring(L, -1));
+	assert(lua_gettop(L) == 0);
 }
 
+/*
+	The draw function is called after the canvas has been cleared to black
+	and before the next call to present the canvas, so this is the time for
+	Lua scripts to draw to the canvas.
+
+	If on_draw is found in global scope, then call it. Otherwise do nothing.
+*/
 static void draw() {
 	lua_getglobal(L, "on_draw");
 	assert(lua_gettop(L) == 1);
@@ -78,23 +115,41 @@ static void draw() {
 	if (lua_pcall(L, 0, 0, 0)) {
 		fatal(lua_tostring(L, -1));
 	}
+	assert(lua_gettop(L) == 0);
 }
 
+/*
+	Pad each pass through the main loop with a delay
+	to achieve the DESIRED_MILLIS_PER_FRAME.
+
+	Loop until either process_event_queue returns false
+	or running gets set to false.
+*/
 void loop() {
-	Uint32 start_time;
-	Uint32 elapsed_time;
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	Uint32 frame_start_time;
+	Uint32 frame_elapsed_time;
+
+	assert(lua_gettop(L) == 0);
 	while (running) {
-		start_time = SDL_GetTicks();
+		frame_start_time = SDL_GetTicks();
+
+		// Clear the canvas to black.
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
+
+		// Process all queued events;
+		// quit loop when event processor returns false.
 		if (!process_event_queue(L)) break;
+
+		// Let Lua scripts draw to the canvas.
 		draw();
-		elapsed_time = SDL_GetTicks() - start_time;
-		if (elapsed_time < DESIRED_MILLIS_PER_FRAME) {
-			SDL_Delay(DESIRED_MILLIS_PER_FRAME - elapsed_time);
+
+		// Add delay to achieve DESIRED_MILLIS_PER_FRAME;
+		// delay at least 1 milliseconds to let any waiting threads run.
+		frame_elapsed_time = SDL_GetTicks() - frame_start_time;
+		if (frame_elapsed_time < DESIRED_MILLIS_PER_FRAME) {
+			SDL_Delay(DESIRED_MILLIS_PER_FRAME - frame_elapsed_time);
 		} else {
 			SDL_Delay(1);
 		}
