@@ -19,7 +19,7 @@ function on_touch(x, y)
 		quit() 
 	elseif b2:contains(x, y) then
 		exit()
-		require('ttt_screen').show()
+		require('ttt.screen').show()
 	elseif b3:contains(x, y) then
 		collectgarbage()
 	end

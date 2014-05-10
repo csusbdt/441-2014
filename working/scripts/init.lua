@@ -25,5 +25,6 @@ function on_touch(x, y)
 end
 --]]
 
-require('title_screen').show()
+--require('title_screen').show()
+require('ttt.screen').show()
 
