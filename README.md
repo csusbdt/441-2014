@@ -21,6 +21,26 @@ The project contents include the following.
     android/ - Will contain scripts to build and test for Android.
                Also will include script to build Android installation file.
 
+## Building the code
+
+### Mac
+
+Downlowd the source distributions of SDL2 and SDL2_ttf, and do the following in both of them:
+
+    ./configure
+    make
+    sudo make install
+
+This installs the library include files into /usr/local/include/SDL2 and the library binaries 
+in /usr/local/lib.
+
+Run build.sh to build and run on success.  Run run.sh to run already built executable.
+
+### Windows
+
+You can try getting the build script build.bat working on your system.
+Alternatively, you should create a Visual Studio project to build the code.
+
 
 ## Buttons
 
