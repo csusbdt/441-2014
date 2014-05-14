@@ -1,9 +1,10 @@
 APP=cse441
+ACTOOL=/Applications/Xcode.app/Contents/Developer/usr/bin/actool
 
 cse441.pkg : 
 	mkdir -p build/${APP}.app/Contents/MacOS
 	cp ../a.out build/${APP}.app/Contents/MacOS/
-	actool --compile ../assets Assets.car
+	$ACTOOL  --compile ../working Assets.car
 	pkgbuild --analyze                              \
 		 --root ./build/${APP}.app              \
 		 'build/${APP}.app/Contents/Info.plist'
