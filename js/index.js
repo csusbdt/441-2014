@@ -9,7 +9,7 @@
     ['embed',           20, new Date('2014-04-27T23:59:59'), '<a href="embed.html">Embed</a>'],
     ['proj',            20, new Date('2014-05-04T23:59:59'), '<a href="proj.html">Project</a>'],
     ['tic',             20, new Date('2014-05-11T23:59:59'), '<a href="tic.html">Tic Tac Toe</a>'],
-    ['tba4',            20, new Date('2014-05-18T23:59:59'), '<a href="">TBA</a>'],
+    ['proj2',           20, new Date('2014-05-18T23:59:59'), '<a href="proj2.html">Project Status</a>'],
     ['tba5',            20, new Date('2014-05-25T23:59:59'), '<a href="">TBA</a>'],
     ['tba6',            20, new Date('2014-06-01T23:59:59'), '<a href="">TBA</a>'],
     ['final',           20, new Date('2014-06-10T23:59:59'), '<a href="">Final</a>'],
