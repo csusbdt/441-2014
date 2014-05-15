@@ -137,7 +137,7 @@ function do_computer_turn()
 			end
 		end
 	end
-	local i = math.random(3)
+	local i = math.random(#available)
 	c[available[i].col][available[i].row].mark = 'o'
 end
 
