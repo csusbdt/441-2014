@@ -16,13 +16,13 @@ end
 
 function on_touch(x, y) 
 	if b1:contains(x, y) then 
-		exit()
+		hide()
 		require('story.screen').show()
 	elseif b2:contains(x, y) then
-		exit()
+		hide()
 		require('tic.screen').show()
 	elseif b3:contains(x, y) then
-		exit()
+		hide()
 		quit()
 	end
 end
@@ -36,7 +36,7 @@ function show()
 	_G.on_touch = on_touch
 end
 
-function exit()
+function hide()
 	music:stop() 
 	music = nil
 	b1 = nil
@@ -48,7 +48,6 @@ function exit()
 end
 
 return {
-	show  = show,
-	exit  = exit
+	show  = show
 }
 
