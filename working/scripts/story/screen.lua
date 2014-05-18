@@ -4,7 +4,8 @@ _ENV = {
 	loadfile        = loadfile,
 	pcall           = pcall,
 	msgbox          = msgbox,
-	collectgarbage	= collectgarbage
+	collectgarbage	= collectgarbage,
+	package         = package
 }
 
 Button = require('app.Button')
@@ -13,7 +14,7 @@ dialog_font = require('res.fonts').get('dialog')
 waves  = require('res.waves')
 
 function on_draw()
-	if p        then p:draw(300, 300) end
+	if p        then p:draw(400, 100) end
 	if a1       then a1:draw(100, 50) end
 	if a2       then a2:draw(100, 80) end
 	if b1       then b1:draw()        end
@@ -42,7 +43,11 @@ function return_to_title()
 end
 
 function on_keydown_r()
-	goto_node(current_node)
+	hide()
+	package.loaded['story.screen'] = nil
+	local m = require('story.screen')
+	m.show()
+	--goto_node(current_node)
 end
 
 function on_touch(x, y) 
@@ -53,7 +58,7 @@ function on_touch(x, y)
 end
 
 function show()
-	exit_btn = Button.create_from_text('Exit', 350, 330)
+	exit_btn = Button.create_from_text('Exit', 40, 400)
 	_G.on_draw  = on_draw
 	_G.on_touch = on_touch
 	_G.on_keydown_r = on_keydown_r

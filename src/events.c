@@ -22,7 +22,7 @@ static void on_mouse_down(lua_State * L, const SDL_MouseButtonEvent * e) {
 }
 
 static void on_key_down(lua_State * L, const SDL_KeyboardEvent * e) {
-	if (e->keysym.sym == SDLK_RETURN) {
+	if (e->keysym.sym == SDLK_r) {
 		assert(lua_gettop(L) == 0);
 		lua_getglobal(L, "on_keydown_r");
 		assert(lua_gettop(L) == 1);
