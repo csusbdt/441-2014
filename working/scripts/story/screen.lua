@@ -5,7 +5,6 @@ _ENV = {
 	pcall           = pcall,
 	msgbox          = msgbox,
 	collectgarbage	= collectgarbage
-,print = print
 }
 
 Button = require('app.Button')
@@ -72,6 +71,7 @@ function goto_node(node)
 	local result, msg = pcall(nodefile)
 	if not result then msgbox(msg) return end
 
+	p = nil
 	a1 = nil
 	a2 = nil
 	b1 = nil
@@ -79,14 +79,15 @@ function goto_node(node)
 	c1 = nil
 	c2 = nil
 
+	if env.p then p = textures.image('portraits/' .. env.p .. '.bmp') end
 	if env.a1 then a1 = textures.text(env.a1, dialog_font) end
 	if env.a2 then a2 = textures.text(env.a2, dialog_font) end
 	if env.b1 then 
-		b1 = Button.create_from_text(env.b1, 50, 200) 
+		b1 = Button.create_from_text('a) ' .. env.b1, 50, 300) 
 		if env.c1 then c1 = env.c1 end
 	end
 	if env.b2 then 
-		b2 = Button.create_from_text(env.b2, 50, 240) 
+		b2 = Button.create_from_text('b) ' .. env.b2, 50, 340) 
 		if env.c2 then c2 = env.c2 end
 	end
 	--music = waves.get('music/MushroomForest.wav'):loop()

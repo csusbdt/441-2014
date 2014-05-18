@@ -1,4 +1,4 @@
-p = 'nathan'
+p = 'Nathan'
 a1 = 'Hello.'
 a2 = "I'm Nathan."
 b1 = "I'm Cara."
