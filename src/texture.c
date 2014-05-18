@@ -30,7 +30,11 @@ static int texture_from_file(lua_State * L) {
 	SDL_Surface * surface;
 	
 	filename = luaL_checkstring(L, 1);
-	surface = SDL_LoadBMP(filename);
+	SDL_RWops * file = SDL_RWFromFile(filename, "rb");
+	if (!file) {
+		fatal(SDL_GetError());
+	}
+	surface = SDL_LoadBMP_RW(file, 1);
 	if (!surface) fatal(SDL_GetError()); 
 	return texture_from_surface(L, surface);
 }

@@ -134,7 +134,11 @@ static int wave_from_file(lua_State * L) {
 	filename = luaL_checkstring(L, 1);
 
 	// Load the audio samples.
-	if (SDL_LoadWAV(filename, &wav_spec, &wav_buffer, &wav_length) == NULL) {
+	SDL_RWops * file = SDL_RWFromFile(filename, "rb");
+	if (!file) {
+		fatal(SDL_GetError());
+	}
+	if (SDL_LoadWAV_RW(file, 1, &wav_spec, &wav_buffer, &wav_length) == NULL) {
 		fatal(SDL_GetError());
 	}
 

@@ -17,8 +17,9 @@ static int open_font(lua_State * L) {
 	TTF_Font ** ud;
 
 	fontname = luaL_checkstring(L, 1);
+	SDL_RWops * file = SDL_RWFromFile(fontname, "rt");
 	fontsize = luaL_checkinteger(L, 2);
-	font = TTF_OpenFont(fontname, fontsize);
+	font = TTF_OpenFontRW(file, 1, fontsize);
 	if (!font) fatal(TTF_GetError());
 	ud = (TTF_Font **) lua_newuserdata(L, sizeof(TTF_Font *));
 	if (ud == NULL) fatal("ud NULL in open_font");
