@@ -21,6 +21,19 @@ static void on_mouse_down(lua_State * L, const SDL_MouseButtonEvent * e) {
 	}
 }
 
+static void on_key_down(lua_State * L, const SDL_KeyboardEvent * e) {
+	if (e->keysym.sym == SDLK_RETURN) {
+		assert(lua_gettop(L) == 0);
+		lua_getglobal(L, "on_keydown_r");
+		assert(lua_gettop(L) == 1);
+		if (lua_isnil(L, 1)) {
+			lua_settop(L, 0);
+			return;
+		}
+		if (lua_pcall(L, 0, 0, 0)) error(lua_tostring(L, -1));
+	}
+}
+
 bool process_event_queue(lua_State * L) {
 	SDL_Event e;
 
@@ -28,6 +41,7 @@ bool process_event_queue(lua_State * L) {
 	while (SDL_PollEvent(&e)) {
 		if      (e.type == SDL_QUIT)          { on_window_closing(L);  return false; } 
 		else if (e.type == SDL_MOUSEBUTTONDOWN) on_mouse_down(L, &e.button);
+		else if (e.type == SDL_KEYDOWN)         on_key_down(L, &e.key);
 	}
 	assert(lua_gettop(L) == 0);
 	return true;

@@ -1,15 +1,16 @@
 ## Overview
 
-This program illustrates one way to use SDL2 and Lua to build a 2D video game.
+This program implements a visual novel.  The purpose is to illustrate 
+one way to use SDL2 and Lua to build a 2D video game.
 
 The project contents include the following.
 
     src/ - The app's C source code.
 
     working/ - The working directory when testing the program. 
-               The Put files needed by the program here.
+               Put files needed by the program here.
 
-    lua/ - The Lua source code.
+    lua/ - The Lua source code. (Needed for the Windows build.)
 
     osx/ - Build scripts to generate package installer for Mac OS X distribution.
 
@@ -40,6 +41,10 @@ Run build.sh to build and run on success.  Run run.sh to run already built execu
 
 You can try getting the build script build.bat working on your system.
 Alternatively, you should create a Visual Studio project to build the code.
+
+## Running
+
+After building
 
 
 ## Buttons

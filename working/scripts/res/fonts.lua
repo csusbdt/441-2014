@@ -1,6 +1,6 @@
 local fontspecs = { 
 	dialog = { filename = 'fonts/DroidSansMono.ttf', size = 16 },
-	button = { filename = 'fonts/DroidSansMono.ttf', size = 22 },
+	button = { filename = 'fonts/DroidSansMono.ttf', size = 16 },
 	title  = { filename = 'fonts/DroidSansMono.ttf', size = 28 }
 }
 
