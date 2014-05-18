@@ -37,10 +37,74 @@ static int draw_line(lua_State * L) {
 	return 0;
 }
 
+static int read_file(lua_State * L) {
+	const char * filename;
+	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
+	
+	filename = luaL_checkstring(L, 1);
+	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "rb");
+	if (!file) return 0;
+	Sint64 len = SDL_RWseek(file, 0, SEEK_END);
+	if (len < 0) {
+		lua_pushstring(L, "Failed to seek to end of file.");
+		lua_error(L);
+	}
+	if (SDL_RWseek(file, 0, RW_SEEK_SET) < 0) {
+		lua_pushstring(L, "Failed to seek to beginning of file.");
+		lua_error(L);
+	}
+	if (!file) {
+		lua_pushstring(L, "Failed to open file.");
+		lua_error(L);
+	}
+	char * buf = SDL_malloc(len);
+	if (!buf) {
+		lua_pushstring(L, "Probably not enough memory to store file.");
+		lua_error(L);
+	}
+	SDL_RWread(file, buf, len, 1);
+	SDL_RWclose(file);
+	lua_pushstring(L, buf);
+	SDL_free(buf);
+	return 1;
+}
+
+static int write_file(lua_State * L) {
+	const char * filename;
+	const char * data;
+	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
+	size_t len;
+	
+	filename = luaL_checkstring(L, 1);
+	data = luaL_checklstring(L, 2, &len); // The string from Lua is null terminated.
+	if (!data) {
+		lua_settop(L, 0);
+		lua_pushstring(L, "Second argument not a string.");
+		lua_error(L);
+	}
+	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "wb");
+	if (!file) {
+		lua_settop(L, 0);
+		lua_pushstring(L, "Failed to open file for writing.");
+		lua_error(L);
+	}
+	if (SDL_RWwrite(file, data, 1, len + 1) != len + 1) {
+		lua_settop(L, 0);
+		lua_pushstring(L, "Failed to write file.");
+		lua_error(L);
+	}
+	SDL_RWclose(file);
+	return 0;
+}
+
 void register_util_functions(lua_State * L) {
 	lua_register(L, "quit"           , quit           );
 	lua_register(L, "msgbox"         , msgbox         );
 	lua_register(L, "set_draw_color" , set_draw_color );
 	lua_register(L, "draw_line"      , draw_line      );
+	lua_register(L, "read_file"      , read_file      );
+	lua_register(L, "write_file"     , write_file     );
 }
 

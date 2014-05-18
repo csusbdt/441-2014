@@ -19,3 +19,5 @@ a.exe
 /working\SDL2.dll
 /working\SDL2_ttf.dll
 /working\zlib1.dll
+/working/current_node
+

@@ -5,7 +5,9 @@ _ENV = {
 	pcall           = pcall,
 	msgbox          = msgbox,
 	collectgarbage	= collectgarbage,
-	package         = package
+	package         = package,
+	read_file       = read_file,
+	write_file      = write_file
 }
 
 Button = require('app.Button')
@@ -47,7 +49,6 @@ function on_keydown_r()
 	package.loaded['story.screen'] = nil
 	local m = require('story.screen')
 	m.show()
-	--goto_node(current_node)
 end
 
 function on_touch(x, y) 
@@ -62,12 +63,18 @@ function show()
 	_G.on_draw  = on_draw
 	_G.on_touch = on_touch
 	_G.on_keydown_r = on_keydown_r
-	goto_node('start')
+	current_node = read_file('current_node')
+	if not current_node then current_node = 'start' end
+	goto_node(current_node)
 end
 
 function goto_node(node)
-	if not node then return_to_title(); return end
-	current_node = node
+	if not node then
+		current_node = 'start'
+		write_file('current_node', current_node)
+		return_to_title()
+		return 
+	end
 	local file = 'nodes/' .. node .. '.lua'
 	local env = {}
 	local nodefile, msg = loadfile(file, 't', env)
@@ -96,6 +103,9 @@ function goto_node(node)
 		if env.c2 then c2 = env.c2 end
 	end
 	--music = waves.get('music/MushroomForest.wav'):loop()
+
+	current_node = node
+	write_file('current_node', current_node)
 end
 
 return {

@@ -3,7 +3,8 @@ _ENV = {
 	require        = require,
 	quit           = quit,
 	collectgarbage = collectgarbage,
-	package        = package
+	package        = package,
+read_file = read_file
 }
 
 Button = require('app.Button')

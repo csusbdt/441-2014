@@ -71,6 +71,7 @@ static void init() {
 	} else {
 		data_path = SDL_strdup("./");
 	}
+	printf("data_path = %s\n", data_path);
 
 	window = SDL_CreateWindow(
 		APP_TITLE, 
