@@ -15,6 +15,7 @@
 #define APP_TITLE  "Sample SDL Lua Project"
 #define APP_WIDTH  640
 #define APP_HEIGHT 480
+#define MAX_ADJUSTED_FILENAME_LEN 256
 
 typedef int bool;
 #define false 0
@@ -26,6 +27,7 @@ extern const SDL_Color APP_WHITE;
 
 void error(const char * msg);
 void fatal(const char * msg);
+void adjust_filename(char * dst, const char * src, int maxlen);
 
 #endif
 

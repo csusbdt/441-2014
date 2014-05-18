@@ -8,6 +8,7 @@ bool process_event_queue(lua_State * L);
 
 bool running = true;
 SDL_Renderer * renderer;
+char * data_path = NULL;
 
 static lua_State  * L;
 static SDL_Window * window;
@@ -62,6 +63,14 @@ static void shutdown() {
 */
 static void init() {
 	if (SDL_Init(SDL_INIT_FLAGS)) fatal(SDL_GetError());
+
+	char * base_path = SDL_GetBasePath();
+	if (base_path) {
+		data_path = SDL_strdup(base_path);
+		SDL_free(base_path);
+	} else {
+		data_path = SDL_strdup("./");
+	}
 
 	window = SDL_CreateWindow(
 		APP_TITLE, 

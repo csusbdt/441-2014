@@ -28,9 +28,11 @@ static int texture_from_surface(lua_State * L, SDL_Surface * surface) {
 static int texture_from_file(lua_State * L) {
 	const char * filename;
 	SDL_Surface * surface;
+	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
 	
 	filename = luaL_checkstring(L, 1);
-	SDL_RWops * file = SDL_RWFromFile(filename, "rb");
+	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) {
 		fatal(SDL_GetError());
 	}
