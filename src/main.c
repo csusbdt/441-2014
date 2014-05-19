@@ -50,6 +50,16 @@ static void shutdown() {
 	SDL_Quit();
 }
 
+int SDLCALL eventFilter(void * userdata, SDL_Event * event)
+{
+	if (event->type == SDL_APP_LOWMEMORY) {
+		lua_gc(L, LUA_GCCOLLECT, 0);
+	} else if (event->type == SDL_APP_TERMINATING) {
+		running = false;
+	}
+	return 1;
+}
+
 /*
 	Initialize SDL, SDL_ttf and Lua.
 	Register the app's C functions with Lua.
@@ -85,8 +95,13 @@ static void init() {
 	renderer = SDL_CreateRenderer(window, -1, RENDERER_INIT_FLAGS);
 	if (!renderer) fatal(SDL_GetError());
     
-	//if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT))
-	//	fatal(SDL_GetError());
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+
+	if (SDL_RenderSetLogicalSize(renderer, APP_WIDTH, APP_HEIGHT)) {
+		fatal(SDL_GetError());
+	}
+
+	SDL_AddEventWatch(eventFilter, NULL);
 
 	clear_canvas();
 
@@ -115,6 +130,8 @@ static void init() {
 	If on_draw is found in global scope, then call it. Otherwise do nothing.
 */
 static void draw() {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
 	assert(lua_gettop(L) == 0);
 	lua_getglobal(L, "on_draw");
 	assert(lua_gettop(L) == 1);
@@ -127,6 +144,7 @@ static void draw() {
 		fatal(lua_tostring(L, -1));
 	}
 	assert(lua_gettop(L) == 0);
+	SDL_RenderPresent(renderer);
 }
 
 /*
@@ -144,19 +162,14 @@ void loop() {
 	while (running) {
 		frame_start_time = SDL_GetTicks();
 
-		// Clear the canvas to black.
-		SDL_RenderPresent(renderer);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-
 		// Process all queued events;
 		// quit loop when event processor returns false.
 		assert(lua_gettop(L) == 0);
 		if (!process_event_queue(L)) break;
 		assert(lua_gettop(L) == 0);
 
-		// Let Lua scripts draw to the canvas.
 		draw();
+		assert(lua_gettop(L) == 0);
 
 		// Add delay to achieve DESIRED_MILLIS_PER_FRAME;
 		// delay at least 1 milliseconds to let any waiting threads run.
