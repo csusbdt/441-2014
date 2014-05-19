@@ -40,12 +40,15 @@ static int draw_line(lua_State * L) {
 static int read_file(lua_State * L) {
 	const char * filename;
 	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
+	SDL_RWops * file;
+	Sint64 len;
+	char * buf;
 	
 	filename = luaL_checkstring(L, 1);
 	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
-	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "rb");
+	file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) return 0;
-	Sint64 len = SDL_RWseek(file, 0, SEEK_END);
+	len = SDL_RWseek(file, 0, SEEK_END);
 	if (len < 0) {
 		lua_pushstring(L, "Failed to seek to end of file.");
 		lua_error(L);
@@ -58,7 +61,7 @@ static int read_file(lua_State * L) {
 		lua_pushstring(L, "Failed to open file.");
 		lua_error(L);
 	}
-	char * buf = SDL_malloc(len);
+	buf = SDL_malloc(len);
 	if (!buf) {
 		lua_pushstring(L, "Probably not enough memory to store file.");
 		lua_error(L);
@@ -75,6 +78,7 @@ static int write_file(lua_State * L) {
 	const char * data;
 	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
 	size_t len;
+	SDL_RWops * file;
 	
 	filename = luaL_checkstring(L, 1);
 	data = luaL_checklstring(L, 2, &len); // The string from Lua is null terminated.
@@ -84,7 +88,7 @@ static int write_file(lua_State * L) {
 		lua_error(L);
 	}
 	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
-	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "wb");
+	file = SDL_RWFromFile(adjusted_filename, "wb");
 	if (!file) {
 		lua_settop(L, 0);
 		lua_pushstring(L, "Failed to open file for writing.");
@@ -107,4 +111,3 @@ void register_util_functions(lua_State * L) {
 	lua_register(L, "read_file"      , read_file      );
 	lua_register(L, "write_file"     , write_file     );
 }
-

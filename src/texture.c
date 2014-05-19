@@ -29,10 +29,11 @@ static int texture_from_file(lua_State * L) {
 	const char * filename;
 	SDL_Surface * surface;
 	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
+	SDL_RWops * file;
 	
 	filename = luaL_checkstring(L, 1);
 	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
-	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "rb");
+	file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) {
 		fatal(SDL_GetError());
 	}
@@ -59,6 +60,7 @@ static int texture_from_font(lua_State * L) {
 static int destroy_texture(lua_State * L) {
 	SDL_Texture ** ud;
 	SDL_Texture * texture;
+	
 	ud = (SDL_Texture **) lua_touserdata(L, 1);
 	if (ud == NULL) {
 		fatal("destroy_texture called with bad argument");

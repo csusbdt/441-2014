@@ -72,9 +72,11 @@ int SDLCALL eventFilter(void * userdata, SDL_Event * event)
 		on_quit
 */
 static void init() {
+	char * base_path;
+
 	if (SDL_Init(SDL_INIT_FLAGS)) fatal(SDL_GetError());
 
-	char * base_path = SDL_GetBasePath();
+	base_path = SDL_GetBasePath();
 	if (base_path) {
 		data_path = SDL_strdup(base_path);
 		SDL_free(base_path);

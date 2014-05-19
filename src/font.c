@@ -16,10 +16,11 @@ static int open_font(lua_State * L) {
 	TTF_Font * font;
 	TTF_Font ** ud;
 	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
+	SDL_RWops * file;
 	
 	filename = luaL_checkstring(L, 1);
 	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
-	SDL_RWops * file = SDL_RWFromFile(adjusted_filename, "rt");
+	file = SDL_RWFromFile(adjusted_filename, "rt");
 	fontsize = luaL_checkinteger(L, 2);
 	font = TTF_OpenFontRW(file, 1, fontsize);
 	if (!font) fatal(TTF_GetError());
