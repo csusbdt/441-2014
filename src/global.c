@@ -1,6 +1,7 @@
 #include "global.h"
 
 extern char * data_path;
+extern char * pref_path;
 const SDL_Color APP_WHITE = { 255, 255, 255, 255 };
 
 void error(const char * msg) {
@@ -20,7 +21,7 @@ char * string_cat(const char * s1, const char * s2) {
 	return buf;
 }
 
-void adjust_filename(char * dst, const char * src, int maxlen) {
+void prepend_data_path(char * dst, const char * src, int maxlen) {
 	if (SDL_strlcpy(dst, data_path, maxlen) >= maxlen) {
 		fatal("not enough space for data_path");
 	}
@@ -29,3 +30,14 @@ void adjust_filename(char * dst, const char * src, int maxlen) {
 		fatal(msg);
 	}
 }
+
+void prepend_pref_path(char * dst, const char * src, int maxlen) {
+	if (SDL_strlcpy(dst, pref_path, maxlen) >= maxlen) {
+		fatal("not enough space for pref_path");
+	}
+	if (SDL_strlcat(dst, src, maxlen) >= maxlen) {
+		char * msg = string_cat(src, " too long");
+		fatal(msg);
+	}
+}
+

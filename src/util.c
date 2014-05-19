@@ -45,7 +45,7 @@ static int read_file(lua_State * L) {
 	char * buf;
 	
 	filename = luaL_checkstring(L, 1);
-	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	prepend_pref_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
 	file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) return 0;
 	len = SDL_RWseek(file, 0, SEEK_END);
@@ -87,7 +87,7 @@ static int write_file(lua_State * L) {
 		lua_pushstring(L, "Second argument not a string.");
 		lua_error(L);
 	}
-	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	prepend_pref_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
 	file = SDL_RWFromFile(adjusted_filename, "wb");
 	if (!file) {
 		lua_settop(L, 0);

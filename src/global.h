@@ -27,7 +27,8 @@ extern const SDL_Color APP_WHITE;
 
 void error(const char * msg);
 void fatal(const char * msg);
-void adjust_filename(char * dst, const char * src, int maxlen);
+void prepend_data_path(char * dst, const char * src, int maxlen);
+void prepend_pref_path(char * dst, const char * src, int maxlen);
 
 #endif
 

@@ -19,7 +19,7 @@ static int open_font(lua_State * L) {
 	SDL_RWops * file;
 	
 	filename = luaL_checkstring(L, 1);
-	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	prepend_data_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
 	file = SDL_RWFromFile(adjusted_filename, "rt");
 	fontsize = luaL_checkinteger(L, 2);
 	font = TTF_OpenFontRW(file, 1, fontsize);

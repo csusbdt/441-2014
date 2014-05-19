@@ -9,6 +9,7 @@ bool process_event_queue(lua_State * L);
 bool running = true;
 SDL_Renderer * renderer;
 char * data_path = NULL;
+char * pref_path = NULL;
 
 static lua_State  * L;
 static SDL_Window * window;
@@ -76,6 +77,7 @@ static void init() {
 
 	if (SDL_Init(SDL_INIT_FLAGS)) fatal(SDL_GetError());
 
+	// Determine the data-path (resource files).
 	base_path = SDL_GetBasePath();
 	if (base_path) {
 		data_path = SDL_strdup(base_path);
@@ -84,6 +86,17 @@ static void init() {
 		data_path = SDL_strdup("./");
 	}
 	printf("data_path = %s\n", data_path);
+
+	// Determine the pref-path (game save files).
+	base_path = SDL_GetPrefPath("cse441", APP_TITLE);
+	if (base_path) {
+		pref_path = SDL_strdup(base_path);
+		SDL_free(base_path);
+	} else {
+		// Writing save file not possible.
+		pref_path = NULL;
+	}
+	printf("pref_path = %s\n", pref_path);
 
 	window = SDL_CreateWindow(
 		APP_TITLE, 

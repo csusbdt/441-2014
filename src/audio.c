@@ -134,7 +134,7 @@ static int wave_from_file(lua_State * L) {
 	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
 	
 	filename = luaL_checkstring(L, 1);
-	adjust_filename(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	prepend_data_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
 
 	// Load the audio samples.
 	file = SDL_RWFromFile(adjusted_filename, "rb");
