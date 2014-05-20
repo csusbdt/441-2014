@@ -26,7 +26,7 @@ static void register_global_functions(lua_State * L) {
 	register_font_functions(L);
 }
 
-static void set_require_path(lua_State * L, const char * path) {
+static void set_package_path(lua_State * L, const char * path) {
 	assert(lua_gettop(L) == 0);
 	lua_getglobal(L, "package");
 	lua_pushstring(L, "path");
@@ -74,6 +74,8 @@ int SDLCALL eventFilter(void * userdata, SDL_Event * event)
 */
 static void init() {
 	char * base_path;
+	char buf[MAX_ADJUSTED_FILENAME_LEN];
+	char package_path[MAX_ADJUSTED_FILENAME_LEN * 2];
 
 	if (SDL_Init(SDL_INIT_FLAGS)) fatal(SDL_GetError());
 
@@ -127,13 +129,15 @@ static void init() {
 
 	luaL_openlibs(L);
 
-	set_require_path(L, "scripts/?.lua");
+	prepend_data_path(package_path, "scripts/?.lua;", MAX_ADJUSTED_FILENAME_LEN);
+	set_package_path(L, package_path);
 
 	assert(lua_gettop(L) == 0);
 	register_global_functions(L);
 	assert(lua_gettop(L) == 0);
 
-	if (luaL_dofile(L, "scripts/init.lua")) fatal(luaL_checkstring(L, -1));
+	prepend_data_path(buf, "scripts/init.lua", MAX_ADJUSTED_FILENAME_LEN);
+	if (luaL_dofile(L, buf)) fatal(luaL_checkstring(L, -1));
 	assert(lua_gettop(L) == 0);
 }
 
