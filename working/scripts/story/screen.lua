@@ -34,6 +34,7 @@ function hide()
 	c1 = nil
 	c2 = nil
 	music = nil
+	music_instance = nil
 	_G.on_draw  = nil
 	_G.on_touch = nil
 	_G.on_keydown_r = nil
@@ -85,7 +86,7 @@ function goto_node(node)
 	if not nodefile then msgbox(msg); return end
 
 	local result, msg = pcall(nodefile)
-	if not result then msgbox(msg) return end
+	if not result then msgbox(msg); return end
 
 	p = nil
 	a1 = nil
@@ -106,7 +107,19 @@ function goto_node(node)
 		b2 = Button.create_from_text('b) ' .. env.b2, 50, 340) 
 		if env.c2 then c2 = env.c2 end
 	end
-	--music = waves.get('music/MushroomForest.wav'):loop()
+	if not env.music then 
+		music = nil
+		music_instance = nil
+	elseif music ~= env.music then
+		music = env.music
+		music_instance = waves.get('music/' .. music .. '.wav')
+		if music_instance then
+			music_instance:loop()
+		else
+			msgbox('Unknown music: ' .. music)
+			music = nil
+		end
+	end
 
 	current_node = node
 	write_file('current_node', current_node)
