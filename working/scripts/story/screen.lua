@@ -1,11 +1,12 @@
 _ENV = {
 	_G		= _G,
 	require 	= require,
-	loadfile        = loadfile,
+	load            = load,
 	pcall           = pcall,
 	msgbox          = msgbox,
 	collectgarbage	= collectgarbage,
 	package         = package,
+	load_chunk      = load_chunk,
 	read_file       = read_file,
 	write_file      = write_file
 }
@@ -76,8 +77,9 @@ function goto_node(node)
 		return 
 	end
 	local file = 'nodes/' .. node .. '.lua'
+	local chunk = load_chunk(file)
 	local env = {}
-	local nodefile, msg = loadfile(file, 't', env)
+	local nodefile, msg = load(chunk, nil, 't', env)
 	if not nodefile then msgbox(msg); return end
 
 	local result, msg = pcall(nodefile)

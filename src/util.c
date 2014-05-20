@@ -37,7 +37,7 @@ static int draw_line(lua_State * L) {
 	return 0;
 }
 
-static int read_file(lua_State * L) {
+static int read_string(lua_State * L, bool from_data_path) {
 	const char * filename;
 	char adjusted_filename[MAX_ADJUSTED_FILENAME_LEN];
 	SDL_RWops * file;
@@ -45,7 +45,11 @@ static int read_file(lua_State * L) {
 	char * buf;
 	
 	filename = luaL_checkstring(L, 1);
-	prepend_pref_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	if (from_data_path) {
+		prepend_data_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	} else {
+		prepend_pref_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
+	}
 	file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) return 0;
 	len = SDL_RWseek(file, 0, SEEK_END);
@@ -68,9 +72,17 @@ static int read_file(lua_State * L) {
 	}
 	SDL_RWread(file, buf, len, 1);
 	SDL_RWclose(file);
-	lua_pushstring(L, buf);
+	lua_pushlstring(L, buf, len);
 	SDL_free(buf);
 	return 1;
+}
+
+static int read_file(lua_State * L) {
+	return read_string(L, true);
+}
+
+static int load_chunk(lua_State * L) {
+	return read_string(L, true);
 }
 
 static int write_file(lua_State * L) {
@@ -94,7 +106,7 @@ static int write_file(lua_State * L) {
 		lua_pushstring(L, "Failed to open file for writing.");
 		lua_error(L);
 	}
-	if (SDL_RWwrite(file, data, 1, len + 1) != len + 1) {
+	if (SDL_RWwrite(file, data, 1, len) != len) {
 		lua_settop(L, 0);
 		lua_pushstring(L, "Failed to write file.");
 		lua_error(L);
@@ -110,4 +122,5 @@ void register_util_functions(lua_State * L) {
 	lua_register(L, "draw_line"      , draw_line      );
 	lua_register(L, "read_file"      , read_file      );
 	lua_register(L, "write_file"     , write_file     );
+	lua_register(L, "load_chunk"     , load_chunk     );
 }
