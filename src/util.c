@@ -51,7 +51,10 @@ static int read_string(lua_State * L, bool from_data_path) {
 		prepend_pref_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
 	}
 	file = SDL_RWFromFile(adjusted_filename, "rb");
-	if (!file) return 0;
+	if (!file) {
+		lua_pushstring(L, SDL_GetError());
+		lua_error(L);
+	}
 	len = SDL_RWseek(file, 0, SEEK_END);
 	if (len < 0) {
 		lua_pushstring(L, "Failed to seek to end of file.");
@@ -59,10 +62,6 @@ static int read_string(lua_State * L, bool from_data_path) {
 	}
 	if (SDL_RWseek(file, 0, RW_SEEK_SET) < 0) {
 		lua_pushstring(L, "Failed to seek to beginning of file.");
-		lua_error(L);
-	}
-	if (!file) {
-		lua_pushstring(L, "Failed to open file.");
 		lua_error(L);
 	}
 	buf = SDL_malloc(len);

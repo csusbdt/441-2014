@@ -37,13 +37,14 @@ static void on_key_down(lua_State * L, const SDL_KeyboardEvent * e) {
 bool process_event_queue(lua_State * L) {
 	SDL_Event e;
 
-	assert(lua_gettop(L) == 0);
+	//assert(lua_gettop(L) == 0);
 	while (SDL_PollEvent(&e)) {
 		if      (e.type == SDL_QUIT)          { on_window_closing(L);  return false; } 
 		else if (e.type == SDL_MOUSEBUTTONDOWN) on_mouse_down(L, &e.button);
 		else if (e.type == SDL_KEYDOWN)         on_key_down(L, &e.key);
 	}
-	assert(lua_gettop(L) == 0);
+	lua_settop(L, 0);
+	//assert(lua_gettop(L) == 0);
 	return true;
 }
 

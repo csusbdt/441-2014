@@ -139,10 +139,12 @@ static int wave_from_file(lua_State * L) {
 	// Load the audio samples.
 	file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) {
-		fatal(SDL_GetError());
+		lua_pushstring(L, SDL_GetError());
+		lua_error(L);
 	}
 	if (SDL_LoadWAV_RW(file, 1, &wav_spec, &wav_buffer, &wav_length) == NULL) {
-		fatal(SDL_GetError());
+		lua_pushstring(L, SDL_GetError());
+		lua_error(L);
 	}
 
 	// Convert audio samples to the application's audio specifications.
