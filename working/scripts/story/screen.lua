@@ -65,7 +65,9 @@ function show()
 	_G.on_touch = on_touch
 	_G.on_keydown_r = on_keydown_r
 	current_node = read_file('current_node')
-	if not current_node then current_node = 'start' end
+	if not current_node then 
+		current_node = 'start' 
+	end
 	goto_node(current_node)
 end
 

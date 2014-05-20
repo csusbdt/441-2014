@@ -1,9 +1,7 @@
-APP=cse441
-#ACTOOL=/Applications/Xcode.app/Contents/Developer/usr/bin/actool
-#	$ACTOOL  --compile ../working Assets.car
+# To generate an empty plist.
+# pkgbuild --analyze --root ./build/${APP}.app Info.plist
 
-#		 --component-plist 'Info.plist'                            \
-#	cp Info.plist build/${APP}.app/Contents/
+APP=cse441
 
 cse441.pkg : 
 	mkdir -p build/${APP}.app/Contents/MacOS
@@ -17,14 +15,6 @@ cse441.pkg :
 		 --version "1.0"                                           \
 		 --install-location "/Applications"                        \
 		 '${APP}.pkg'
-
-
-#plist :
-#	pkgbuild --analyze                              \
-#		 --root ./build/${APP}.app              \
-#		Info.plist
-#
-#		 'build/${APP}.app/Contents/Info.plist'
 
 clean :
 	rm -rf build ${APP}.pkg

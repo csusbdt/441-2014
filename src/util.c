@@ -78,7 +78,7 @@ static int read_string(lua_State * L, bool from_data_path) {
 }
 
 static int read_file(lua_State * L) {
-	return read_string(L, true);
+	return read_string(L, false);
 }
 
 static int load_chunk(lua_State * L) {
