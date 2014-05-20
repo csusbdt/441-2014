@@ -16,11 +16,20 @@ cse441.pkg :
 	
 	cp -f /usr/local/lib/libSDL2_ttf-2.0.0.dylib \
         	build/${APP}.app/Contents/Frameworks
+	
+	cp -f /opt/X11/lib/libfreetype.6.dylib \
+        	build/${APP}.app/Contents/Frameworks
 
 	install_name_tool                                                             \
 		-change                                                               \
 		/usr/local/lib/libSDL2-2.0.0.dylib                                    \
         	/Applications/${APP}.app/Contents/Frameworks/libSDL2-2.0.0.dylib      \
+        	build/${APP}.app/Contents/Frameworks/libSDL2_ttf-2.0.0.dylib
+
+	install_name_tool                                                             \
+		-change                                                               \
+		/opt/X11/lib/libfreetype.6.dylib                                      \
+        	/Applications/${APP}.app/Contents/Frameworks/libfreetype.6.dylib      \
         	build/${APP}.app/Contents/Frameworks/libSDL2_ttf-2.0.0.dylib
 
 	install_name_tool                                                             \
