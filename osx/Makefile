@@ -10,23 +10,30 @@ cse441.pkg :
 
 	cp Info.plist build/${APP}.app/Contents/
 	cp ../working/a.out build/${APP}.app/Contents/MacOS/
-	
-	export DYLIB=libSDL2-2.0.0.dylib
-	export DYLIB=libSDL2_ttf-2.0.0.dylib
 
 	cp -f /usr/local/lib/libSDL2-2.0.0.dylib \
-	build/${APP}.app/Contents/Frameworks
+		build/${APP}.app/Contents/Frameworks
 	
 	cp -f /usr/local/lib/libSDL2_ttf-2.0.0.dylib \
-        build/${APP}.app/Contents/Frameworks
+        	build/${APP}.app/Contents/Frameworks
 
-	install_name_tool -change /usr/local/lib/libSDL2_ttf-2.0.0.dylib \
-	build/${APP}.app/Contents/Frameworks/libSDL2_ttf-2.0.0.dylib \
-	build/${APP}.app/Contents/MacOS/a.out 
+	install_name_tool                                                             \
+		-change                                                               \
+		/usr/local/lib/libSDL2-2.0.0.dylib                                    \
+        	/Applications/${APP}.app/Contents/Frameworks/libSDL2-2.0.0.dylib      \
+        	build/${APP}.app/Contents/Frameworks/libSDL2_ttf-2.0.0.dylib
 
-	install_name_tool -change /usr/local/lib/libSDL2-2.0.0.dylib \
-        build/${APP}.app/Contents/Frameworks/libSDL2-2.0.0.dylib \
-	build/${APP}.app/Contents/MacOS/a.out
+	install_name_tool                                                             \
+		-change                                                               \
+		/usr/local/lib/libSDL2_ttf-2.0.0.dylib                                \
+		/Applications/${APP}.app/Contents/Frameworks/libSDL2_ttf-2.0.0.dylib  \
+		build/${APP}.app/Contents/MacOS/a.out 
+
+	install_name_tool                                                             \
+		-change                                                               \
+		/usr/local/lib/libSDL2-2.0.0.dylib                                    \
+        	/Applications/${APP}.app/Contents/Frameworks/libSDL2-2.0.0.dylib      \
+		build/${APP}.app/Contents/MacOS/a.out
 
 	cp -r ../working/* build/${APP}.app/Contents/Resources/
 	rm build/${APP}.app/Contents/Resources/a.out
