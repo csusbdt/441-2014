@@ -52,8 +52,8 @@ static int read_string(lua_State * L, bool from_data_path) {
 	}
 	file = SDL_RWFromFile(adjusted_filename, "rb");
 	if (!file) {
-		lua_pushstring(L, SDL_GetError());
-		lua_error(L);
+		lua_pushnil(L);
+		return 0;
 	}
 	len = SDL_RWseek(file, 0, SEEK_END);
 	if (len < 0) {

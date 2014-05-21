@@ -10,7 +10,6 @@ Button = require('app.Button')
 waves  = require('res.waves')
 
 function on_draw()
-	trials:draw()
 	b1:draw()
 	b2:draw()
 	b3:draw()
@@ -18,10 +17,7 @@ function on_draw()
 end
 
 function on_touch(x, y) 
-	if trials:contains(x, y) then 
-		hide()
-		require('trials.screen').show()
-	elseif b1:contains(x, y) then 
+	if b1:contains(x, y) then 
 		hide()
 		require('story.screen').show()
 	elseif b2:contains(x, y) then
@@ -36,8 +32,7 @@ function on_touch(x, y)
 end
 
 function show()
-	trials = Button.create_from_text('Trials of the Damned', 100, 100)
-	b1 = Button.create_from_text('Story', trials.x, trials.y + 32)
+	b1 = Button.create_from_text('Story', 100, 100)
 	b2 = Button.create_from_text('Tic Tac Toe', b1.x, b1.y + 32)
 	b3 = Button.create_from_text('Play sound.', b2.x, b2.y + 32)
 	b4 = Button.create_from_text('Exit', b3.x, b3.y + 32)
@@ -49,7 +44,6 @@ end
 
 function hide()
 	music = nil
-	trials = nil
 	b1 = nil
 	b2 = nil
 	b3 = nil

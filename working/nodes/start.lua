@@ -1,11 +1,8 @@
 p = 'Nathan'
-music = 'MushroomForest'
+music = 'Overworld'
 
-a1 = 'Hello.'
-a2 = "I'm Nathan."
+a1 = 'Are you Cecelia Noble?'
 
-b1 = "I'm Cara."
-b2 = "I don't know who I am."
+b1 = "Yes, I am."
 
-c1 = 'intro/great'
-c2 = 'intro/youre-cara'
+c1 = 'intro/n1'
