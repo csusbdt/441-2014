@@ -17,6 +17,10 @@ dialog_font = require('res.fonts').get('dialog')
 waves       = require('res.waves')
 history     = require('app.history')
 
+if not history.get('current_node') then
+	history.set('current_node', 'start')
+end
+
 function on_draw()
 	if p        then  p:draw(400, 100) end
 	if a1       then a1:draw(100,  50) end
@@ -34,8 +38,14 @@ function on_keydown_r()
 end
 
 function hide()
-	env              = nil
-	music_instance   = nil
+	mi               = nil
+	p                = nil
+        a1               = nil
+        a2               = nil
+        b1               = nil
+        b2               = nil
+        c1               = nil
+        c2               = nil
 	_G.on_draw       = nil
 	_G.on_touch      = nil
 	_G.on_keydown_r  = nil
@@ -58,14 +68,12 @@ function show()
 	_G.on_draw      = on_draw
 	_G.on_touch     = on_touch
 	_G.on_keydown_r = on_keydown_r
-	current_node    = read_file('current_node') or 'start'
-	goto_node(current_node)
+	goto_node(history.get('current_node'))
 end
 
 function end_story()
 	history.clear()
-	current_node = 'start'
-	write_file('current_node', current_node)
+	history.set('current_node', 'start')
 	hide()
 	require('title.screen').show()
 end
@@ -84,13 +92,13 @@ function goto_node(node)
 	local n, msg = load(chunk, nil, 't', env)
 	if not n then 
 		msgbox(msg)
-		goto_node(current_node)
+		goto_node(history.get('current_node'))
 		return 
 	end
 	local status, msg = pcall(n)
 	if not status then 
 		msgbox(msg)
-		goto_node(current_node)
+		goto_node(history.get('current_node'))
 		return 
 	end
 
@@ -119,8 +127,7 @@ function goto_node(node)
 		end
 	end
 
-	current_node = node
-	write_file('current_node', current_node)
+	history.set('current_node', node)
 end
 
 return {

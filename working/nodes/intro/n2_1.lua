@@ -7,5 +7,3 @@ b1 = "..."
 
 c1 = 'end'
 
-anger['nathan'] = -1
-

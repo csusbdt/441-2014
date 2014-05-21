@@ -92,11 +92,11 @@ static int write_file(lua_State * L) {
 	SDL_RWops * file;
 	
 	filename = luaL_checkstring(L, 1);
-	data = luaL_checklstring(L, 2, &len); // The string from Lua is null terminated.
-	if (!data) {
-		lua_settop(L, 0);
-		lua_pushstring(L, "Second argument not a string.");
-		lua_error(L);
+	if (lua_isnil(L, 2)) {
+		data = NULL;
+		len = 0;
+	} else {
+		data = luaL_checklstring(L, 2, &len); // The string from Lua is null terminated.
 	}
 	prepend_pref_path(adjusted_filename, filename, MAX_ADJUSTED_FILENAME_LEN);
 	file = SDL_RWFromFile(adjusted_filename, "wb");
@@ -105,7 +105,7 @@ static int write_file(lua_State * L) {
 		lua_pushstring(L, "Failed to open file for writing.");
 		lua_error(L);
 	}
-	if (SDL_RWwrite(file, data, 1, len) != len) {
+	if (data && SDL_RWwrite(file, data, 1, len) != len) {
 		lua_settop(L, 0);
 		lua_pushstring(L, "Failed to write file.");
 		lua_error(L);
