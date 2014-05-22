@@ -3,12 +3,37 @@ _ENV = {
 	write_file = write_file,
 	string = string,
 	pairs = pairs,
-	_G = _G
+	_G = _G,
+	setmetatable = setmetatable,
+	msgbox = msgbox,
+	type = type,
+	quit = quit,
+	rawset = rawset,
+	rawget = rawget
 }
 
+module_mt = {}
+module    = {}
+t         = {} -- backing table
+
+module_mt.__index = function(_, k)
+	return rawget(t, k)
+end
+
+module_mt.__newindex = function(_, k, v)
+	if type(v) ~= 'string' and type(v) ~= 'number' then
+		msgbox('Can not insert value of type ' .. type(v) .. ' into save file')
+		quit()
+		return
+	end
+	rawset(t, k, v)
+	save()
+end
+
+setmetatable(module, module_mt)
+
 function load()
-	t = {}
-	local data = read_file('history')
+	local data = read_file('savefile')
 	if not data then return end
 	for k, v in string.gmatch(data, "([%-_%w]+)=([%/%-_%w]+)") do
 		t[k] = v
@@ -21,28 +46,20 @@ function save()
 		data = data and data .. ','
 		data = data or ''
 		data = data .. k .. '=' .. v
+_G.print('data = ' .. data)
 	end
-	write_file('history', data)
+	write_file('savefile', data)
 end
 
 function clear()
-	write_file('history', nil)
-end
-
-function get(k)
-	return t[k]
-end
-
-function set(k, v)
-	t[k] = v
+	for k,v in pairs(t) do t[k] = nil end
 	save()
+	--write_file('savefile', nil)
 end
+
+rawset(module, 'clear', clear)
 
 load()
 
-return {
-	clear = clear ,
-	get   = get   ,
-	set   = set
-}
+return module
 

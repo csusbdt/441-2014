@@ -1,5 +1,5 @@
 p = 'Nathan'
-music = 'Overworld'
+m = 'Overworld'
 
 a1 = 'You made me angry, you know.'
 

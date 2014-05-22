@@ -17,8 +17,8 @@ dialog_font = require('res.fonts').get('dialog')
 waves       = require('res.waves')
 sf          = require('app.savefile')
 
-if not sf.get('current_node') then
-	sf.set('current_node', 'start')
+if not sf.current_node then
+	sf.current_node = 'start'
 end
 
 function on_draw()
@@ -37,6 +37,7 @@ function on_keydown_r()
 end
 
 function hide()
+	m                = nil
 	mi               = nil
 	p                = nil
         a1               = nil
@@ -52,7 +53,7 @@ function hide()
 end
 
 function on_touch(x, y) 
-	if exit_btn:contains(x, y) then 
+	if exit_btn and exit_btn:contains(x, y) then 
 		hide()
 		require('title.screen').show()
 	elseif b1 and b1:contains(x, y) then 
@@ -67,12 +68,12 @@ function show()
 	_G.on_draw      = on_draw
 	_G.on_touch     = on_touch
 	_G.on_keydown_r = on_keydown_r
-	goto_node(sf.get('current_node'))
+	goto_node(sf.current_node)
 end
 
 function end_story()
 	sf.clear()
-	sf.set('current_node', 'start')
+	sf.current_node = 'start'
 	hide()
 	require('title.screen').show()
 end
@@ -91,13 +92,11 @@ function goto_node(node)
 	local n, msg = load(chunk, nil, 't', env)
 	if not n then 
 		msgbox(msg)
-		goto_node(sf.get('current_node'))
 		return 
 	end
 	local status, msg = pcall(n)
 	if not status then 
 		msgbox(msg)
-		goto_node(sf.get('current_node'))
 		return 
 	end
 
@@ -117,16 +116,18 @@ function goto_node(node)
 		mi = nil
 	elseif m ~= env.m then
 		m  = env.m
-		mi = waves.get('music/' .. m .. '.wav')
-		if mi then
-			mi:loop()
+		if mi then mi:stop() end
+		w = waves.get('music/' .. m .. '.wav')
+		if w then
+			mi = w:loop()
 		else
 			msgbox('Unknown music: ' .. m)
 			m = nil
 		end
 	end
+	collectgarbage()  
 
-	sf.set('current_node', node)
+	sf.current_node = node
 end
 
 return {

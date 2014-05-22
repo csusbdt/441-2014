@@ -1,5 +1,5 @@
 p = 'Nathan'
-music = 'Overworld'
+m  = 'Overworld'
 
 a1 = "Well, be more careful next time."
 
