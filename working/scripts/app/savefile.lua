@@ -46,15 +46,14 @@ function save()
 		data = data and data .. ','
 		data = data or ''
 		data = data .. k .. '=' .. v
-_G.print('data = ' .. data)
 	end
+	_G.print('savefile = ' .. (data or ''))
 	write_file('savefile', data)
 end
 
 function clear()
 	for k,v in pairs(t) do t[k] = nil end
 	save()
-	--write_file('savefile', nil)
 end
 
 rawset(module, 'clear', clear)

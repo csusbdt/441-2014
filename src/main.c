@@ -205,7 +205,6 @@ void loop() {
 }
 
 int main(int argc, char * argv[]) {
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, APP_TITLE, "OK", NULL);
 	init();
 	loop();
 	shutdown();

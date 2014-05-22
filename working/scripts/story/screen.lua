@@ -46,6 +46,8 @@ function hide()
         b2               = nil
         c1               = nil
         c2               = nil
+        f1               = nil
+        f2               = nil
 	_G.on_draw       = nil
 	_G.on_touch      = nil
 	_G.on_keydown_r  = nil
@@ -57,8 +59,10 @@ function on_touch(x, y)
 		hide()
 		require('title.screen').show()
 	elseif b1 and b1:contains(x, y) then 
+		if f1 then f1() end
 		goto_node(c1)
 	elseif b2 and b2:contains(x, y) then 
+		if f2 then f2() end
 		goto_node(c2) 
 	end
 end
@@ -110,6 +114,9 @@ function goto_node(node)
 
 	c1 = b1 and env.c1 
 	c2 = b2 and env.c2 
+
+	f1 = c1 and env.f1
+	f2 = c2 and env.f2
 
 	if not env.m then 
 		m  = nil
