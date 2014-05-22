@@ -50,7 +50,17 @@
 		315280FA190F408000A717F7 /* global.c in Sources */ = {isa = PBXBuildFile; fileRef = 315280F5190F408000A717F7 /* global.c */; };
 		315280FB190F408000A717F7 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 315280F7190F408000A717F7 /* main.c */; };
 		315280FC190F408000A717F7 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 315280F8190F408000A717F7 /* util.c */; };
-		315280FE190F40E600A717F7 /* main.lua in Resources */ = {isa = PBXBuildFile; fileRef = 315280FD190F40E600A717F7 /* main.lua */; };
+		3189CA0C192DA1F300C6C69B /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3189CA09192DA1F300C6C69B /* audio.c */; };
+		3189CA0D192DA1F300C6C69B /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = 3189CA0A192DA1F300C6C69B /* font.c */; };
+		3189CA0E192DA1F300C6C69B /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = 3189CA0B192DA1F300C6C69B /* texture.c */; };
+		3189CA16192DA21F00C6C69B /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA0F192DA21F00C6C69B /* fonts */; };
+		3189CA17192DA21F00C6C69B /* music in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA10192DA21F00C6C69B /* music */; };
+		3189CA18192DA21F00C6C69B /* nodes in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA11192DA21F00C6C69B /* nodes */; };
+		3189CA19192DA21F00C6C69B /* portraits in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA12192DA21F00C6C69B /* portraits */; };
+		3189CA1A192DA21F00C6C69B /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA13192DA21F00C6C69B /* scripts */; };
+		3189CA1B192DA21F00C6C69B /* textures in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA14192DA21F00C6C69B /* textures */; };
+		3189CA1C192DA21F00C6C69B /* waves in Resources */ = {isa = PBXBuildFile; fileRef = 3189CA15192DA21F00C6C69B /* waves */; };
+		3189CA1E192DA24900C6C69B /* libSDL2_ttf-ipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3189CA1D192DA24900C6C69B /* libSDL2_ttf-ipad.a */; };
 		FD779EDE0E26BA1200F39101 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD779EDD0E26BA1200F39101 /* CoreAudio.framework */; };
 		FD77A07D0E26BD8C00F39101 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FD77A07C0E26BD8C00F39101 /* Icon.png */; };
 		FD77A07F0E26BDA900F39101 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FD77A07E0E26BDA900F39101 /* Default.png */; };
@@ -203,7 +213,18 @@
 		315280F6190F408000A717F7 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = ../src/global.h; sourceTree = "<group>"; };
 		315280F7190F408000A717F7 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../src/main.c; sourceTree = "<group>"; };
 		315280F8190F408000A717F7 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = util.c; path = ../src/util.c; sourceTree = "<group>"; };
-		315280FD190F40E600A717F7 /* main.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.lua; path = ../main.lua; sourceTree = "<group>"; };
+		3189CA09192DA1F300C6C69B /* audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = audio.c; path = ../src/audio.c; sourceTree = "<group>"; };
+		3189CA0A192DA1F300C6C69B /* font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = font.c; path = ../src/font.c; sourceTree = "<group>"; };
+		3189CA0B192DA1F300C6C69B /* texture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = texture.c; path = ../src/texture.c; sourceTree = "<group>"; };
+		3189CA0F192DA21F00C6C69B /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../working/fonts; sourceTree = "<group>"; };
+		3189CA10192DA21F00C6C69B /* music */ = {isa = PBXFileReference; lastKnownFileType = folder; name = music; path = ../working/music; sourceTree = "<group>"; };
+		3189CA11192DA21F00C6C69B /* nodes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = nodes; path = ../working/nodes; sourceTree = "<group>"; };
+		3189CA12192DA21F00C6C69B /* portraits */ = {isa = PBXFileReference; lastKnownFileType = folder; name = portraits; path = ../working/portraits; sourceTree = "<group>"; };
+		3189CA13192DA21F00C6C69B /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../working/scripts; sourceTree = "<group>"; };
+		3189CA14192DA21F00C6C69B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = textures; path = ../working/textures; sourceTree = "<group>"; };
+		3189CA15192DA21F00C6C69B /* waves */ = {isa = PBXFileReference; lastKnownFileType = folder; name = waves; path = ../working/waves; sourceTree = "<group>"; };
+		3189CA1D192DA24900C6C69B /* libSDL2_ttf-ipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libSDL2_ttf-ipad.a"; path = "lib/libSDL2_ttf-ipad.a"; sourceTree = SOURCE_ROOT; };
+		3189CA1F192DA30800C6C69B /* SDL_ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDL_ttf.h; path = include/SDL_ttf.h; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD779EDD0E26BA1200F39101 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		FD77A07C0E26BD8C00F39101 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -220,6 +241,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
+				3189CA1E192DA24900C6C69B /* libSDL2_ttf-ipad.a in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
 				31266128191053A2002B296A /* libSDL2-ipad.a in Frameworks */,
 				FD779EDE0E26BA1200F39101 /* CoreAudio.framework in Frameworks */,
@@ -243,6 +265,7 @@
 		0097E29912F70C4D00724AC5 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				3189CA1F192DA30800C6C69B /* SDL_ttf.h */,
 				31528047190F3BB700A717F7 /* begin_code.h */,
 				31528048190F3BB700A717F7 /* close_code.h */,
 				3152804A190F3BB700A717F7 /* SDL_assert.h */,
@@ -327,6 +350,7 @@
 		0097E2D412F70C4D00724AC5 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				3189CA1D192DA24900C6C69B /* libSDL2_ttf-ipad.a */,
 				31266127191053A2002B296A /* libSDL2-ipad.a */,
 			);
 			path = lib;
@@ -356,7 +380,13 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				315280FD190F40E600A717F7 /* main.lua */,
+				3189CA0F192DA21F00C6C69B /* fonts */,
+				3189CA10192DA21F00C6C69B /* music */,
+				3189CA11192DA21F00C6C69B /* nodes */,
+				3189CA12192DA21F00C6C69B /* portraits */,
+				3189CA13192DA21F00C6C69B /* scripts */,
+				3189CA14192DA21F00C6C69B /* textures */,
+				3189CA15192DA21F00C6C69B /* waves */,
 				FD77A07E0E26BDA900F39101 /* Default.png */,
 				FD77A07C0E26BD8C00F39101 /* Icon.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -444,6 +474,9 @@
 		315280F3190F405800A717F7 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				3189CA09192DA1F300C6C69B /* audio.c */,
+				3189CA0A192DA1F300C6C69B /* font.c */,
+				3189CA0B192DA1F300C6C69B /* texture.c */,
 				315280F4190F408000A717F7 /* events.c */,
 				315280F5190F408000A717F7 /* global.c */,
 				315280F6190F408000A717F7 /* global.h */,
@@ -504,10 +537,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				315280FE190F40E600A717F7 /* main.lua in Resources */,
+				3189CA1C192DA21F00C6C69B /* waves in Resources */,
+				3189CA17192DA21F00C6C69B /* music in Resources */,
+				3189CA19192DA21F00C6C69B /* portraits in Resources */,
 				FD77A07D0E26BD8C00F39101 /* Icon.png in Resources */,
+				3189CA1A192DA21F00C6C69B /* scripts in Resources */,
+				3189CA16192DA21F00C6C69B /* fonts in Resources */,
 				FD77A07F0E26BDA900F39101 /* Default.png in Resources */,
+				3189CA1B192DA21F00C6C69B /* textures in Resources */,
 				31528096190F3BB700A717F7 /* SDL_config.h.cmake in Resources */,
+				3189CA18192DA21F00C6C69B /* nodes in Resources */,
 				31528097190F3BB700A717F7 /* SDL_config.h.in in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,6 +570,7 @@
 				315280DA190F3F4100A717F7 /* ldblib.c in Sources */,
 				315280EB190F3F4100A717F7 /* lstring.c in Sources */,
 				315280EF190F3F4100A717F7 /* ltm.c in Sources */,
+				3189CA0D192DA1F300C6C69B /* font.c in Sources */,
 				315280E0190F3F4100A717F7 /* linit.c in Sources */,
 				315280ED190F3F4100A717F7 /* ltable.c in Sources */,
 				315280E1190F3F4100A717F7 /* liolib.c in Sources */,
@@ -543,6 +583,7 @@
 				315280FB190F408000A717F7 /* main.c in Sources */,
 				315280DF190F3F4100A717F7 /* lgc.c in Sources */,
 				315280D5190F3F4100A717F7 /* lbaselib.c in Sources */,
+				3189CA0C192DA1F300C6C69B /* audio.c in Sources */,
 				315280DD190F3F4100A717F7 /* ldump.c in Sources */,
 				315280E2190F3F4100A717F7 /* llex.c in Sources */,
 				315280FA190F408000A717F7 /* global.c in Sources */,
@@ -552,6 +593,7 @@
 				315280D7190F3F4100A717F7 /* lcode.c in Sources */,
 				315280E9190F3F4100A717F7 /* lparser.c in Sources */,
 				315280D6190F3F4100A717F7 /* lbitlib.c in Sources */,
+				3189CA0E192DA1F300C6C69B /* texture.c in Sources */,
 				315280E5190F3F4100A717F7 /* loadlib.c in Sources */,
 				315280D4190F3F4100A717F7 /* lauxlib.c in Sources */,
 				315280E4190F3F4100A717F7 /* lmem.c in Sources */,

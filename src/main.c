@@ -57,8 +57,11 @@ int SDLCALL eventFilter(void * userdata, SDL_Event * event)
 		lua_gc(L, LUA_GCCOLLECT, 0);
 	} else if (event->type == SDL_APP_TERMINATING) {
 		running = false;
+	} else {
+		// Not a special event to handle, so let it go onto the event queue.
+		return 1;
 	}
-	return 1;
+        return 0;
 }
 
 /*
@@ -202,7 +205,8 @@ void loop() {
 }
 
 int main(int argc, char * argv[]) {
-	init(); 
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, APP_TITLE, "OK", NULL);
+	init();
 	loop();
 	shutdown();
 	return 0;
