@@ -15,10 +15,10 @@ Button      = require('app.Button')
 textures    = require('res.textures')
 dialog_font = require('res.fonts').get('dialog')
 waves       = require('res.waves')
-history     = require('app.history')
+sf          = require('app.savefile')
 
-if not history.get('current_node') then
-	history.set('current_node', 'start')
+if not sf.get('current_node') then
+	sf.set('current_node', 'start')
 end
 
 function on_draw()
@@ -33,8 +33,7 @@ end
 -- On R key down, reload the story screen.
 function on_keydown_r()
 	hide()
-	package.loaded['story.screen'] = nil
-	require('story.screen').show()
+	show()
 end
 
 function hide()
@@ -68,12 +67,12 @@ function show()
 	_G.on_draw      = on_draw
 	_G.on_touch     = on_touch
 	_G.on_keydown_r = on_keydown_r
-	goto_node(history.get('current_node'))
+	goto_node(sf.get('current_node'))
 end
 
 function end_story()
-	history.clear()
-	history.set('current_node', 'start')
+	sf.clear()
+	sf.set('current_node', 'start')
 	hide()
 	require('title.screen').show()
 end
@@ -88,17 +87,17 @@ function goto_node(node)
 		msgbox(file .. ' not found.') 
 		return 
 	end
-	local env = { history = history }
+	local env = { sf = sf }
 	local n, msg = load(chunk, nil, 't', env)
 	if not n then 
 		msgbox(msg)
-		goto_node(history.get('current_node'))
+		goto_node(sf.get('current_node'))
 		return 
 	end
 	local status, msg = pcall(n)
 	if not status then 
 		msgbox(msg)
-		goto_node(history.get('current_node'))
+		goto_node(sf.get('current_node'))
 		return 
 	end
 
@@ -118,7 +117,7 @@ function goto_node(node)
 		mi = nil
 	elseif m ~= env.m then
 		m  = env.m
-		mi = waves.get('music/' .. music .. '.wav')
+		mi = waves.get('music/' .. m .. '.wav')
 		if mi then
 			mi:loop()
 		else
@@ -127,7 +126,7 @@ function goto_node(node)
 		end
 	end
 
-	history.set('current_node', node)
+	sf.set('current_node', node)
 end
 
 return {
