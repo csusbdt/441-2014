@@ -11,7 +11,7 @@
     ['tic',             20, new Date('2014-05-11T23:59:59'), '<a href="tic.html">Tic Tac Toe</a>'],
     ['proj2',           20, new Date('2014-05-18T23:59:59'), '<a href="proj2.html">Project Status</a>'],
     ['proj3',           20, new Date('2014-05-27T23:59:59'), '<a href="proj3.html">Project Prototype</a>'],
-    ['final',           40, new Date('2014-06-10T23:59:59'), '<a href="">Final</a>'],
+    ['final',           40, new Date('2014-06-10T23:59:59'), '<a href="final.html">Final</a>'],
   ];
 
   app.onload = function() {
